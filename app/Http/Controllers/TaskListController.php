@@ -60,7 +60,7 @@ class TaskListController extends Controller
      */
     public function update(TaskList $tasklist, TaskListRequest $request)
     {
-        $tasklist = DB::table('task_lists')->where('id', $request->list_id)
+        $tasklist = TaskList::query()->where('id', $request->list_id)
             ->update(['list_name' => $request->list_name]);
         return response()->json($tasklist)->setStatusCode(202, 'Successful Edited');
     }
@@ -73,7 +73,7 @@ class TaskListController extends Controller
      */
     public function destroy(TaskList $taskList, Request $request)
     {
-        $taskList = DB::table('task_lists')->where('id', $request->list_id)->delete();
+        $taskList = TaskList::query()->where('id', $request->list_id)->delete();
 
         return response()->json($taskList)->setStatusCode(202, 'Successful deleted');
     }

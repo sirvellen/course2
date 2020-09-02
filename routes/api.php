@@ -41,3 +41,6 @@ Route::prefix('/{desk_id}')->group(function () {
         });
     });
 });
+
+// Exception routes
+Route::get('exception/index', 'ExceptionController@index');

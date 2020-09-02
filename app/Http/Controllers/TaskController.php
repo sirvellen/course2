@@ -57,7 +57,7 @@ class TaskController extends Controller
      */
     public function update(Request $request)
     {
-        $task = DB::table('tasks')->where('id', $request->task_id)
+        $task = Task::query()->where('id', $request->task_id)
             ->update([
                 'task_name' => $request->task_name,
                 'task_description' => $request->task_description,
@@ -73,19 +73,19 @@ class TaskController extends Controller
      */
     public function destroy(Request $request)
     {
-        $task = DB::table('tasks')->where('id', $request->task_id)->delete();
+        $task = Task::query()->where('id', $request->task_id)->delete();
 
         return response()->json($task)->setStatusCode(202, 'Successful deleted');
     }
 
     public function done(Request $request) {
-        $task = DB::table('tasks')->where('id', $request->task_id)->update(['task_done' => true]);
+        $task = Task::query()->where('id', $request->task_id)->update(['task_done' => true]);
 
         return response()->json($task)->setStatusCode(202, 'Successful marked');
     }
 
     public function undone(Request $request) {
-        $task = DB::table('tasks')->where('id', $request->task_id)->update(['task_done' => false]);
+        $task = Task::query()->where('id', $request->task_id)->update(['task_done' => false]);
 
         return response()->json($task)->setStatusCode(202, 'Successful marked');
     }
