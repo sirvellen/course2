@@ -27,10 +27,10 @@ class TaskListController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response|object
      */
-    public function store(TaskListRequest $request)
+    public function store($desk_id, TaskListRequest $request)
     {
 
-        $validated = $request->validated();
+        $validated = Validator::make($request->all(), $request->rules());
 
         if ($validated->fails()) {
             return response($validated->messages(), 400);
@@ -38,7 +38,7 @@ class TaskListController extends Controller
 
         try {
             $tasklist = TaskList::create([
-                'desk_id' => $request->desk_id,
+                'desk_id' => $desk_id,
                 'list_name' => $request->list_name,
             ]);
         } catch (Exception $exception) {
@@ -53,11 +53,12 @@ class TaskListController extends Controller
      * @param int $id
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response|object
      */
-    public function show(Request $request)
+    public function show($desk_id, $list_id, Request $request)
     {
+        // код для будущего расширения поиска
 //      todo:  $data = TaskList::select('id', 'desk_id', 'list_name')->where('id', $request->list_id)->get();
         try {
-            $data = TaskList::select()->where('id', $request->list_id)->get();
+            $data = TaskList::select()->where('id', $list_id)->get();
         } catch (Exception $exception) {
             return response()->json($exception->getMessage())->setStatusCode(400, 'Bad request');
         }
@@ -72,15 +73,15 @@ class TaskListController extends Controller
      * @param int $id
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response|object
      */
-    public function update(TaskListRequest $request)
+    public function update($desk_id, $list_id, TaskListRequest $request)
     {
-        $validated = $request->validated();
+        $validated = Validator::make($request->all(), $request->rules());
 
         if ($validated->fails()) {
             return response($validated->messages(), 400);
         }
         try {
-            $tasklist = TaskList::query()->where('id', $request->list_id)
+            $tasklist = TaskList::query()->where('id', $list_id)
                 ->update(['list_name' => $request->list_name]);
         } catch (Exception $exception) {
             return response()->json($exception->getMessage())->setStatusCode(400, 'Bad request');
@@ -94,10 +95,10 @@ class TaskListController extends Controller
      * @param int $id
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response|object
      */
-    public function destroy(Request $request)
+    public function destroy($desk_id, $list_id, Request $request)
     {
         try {
-            $taskList = TaskList::query()->where('id', $request->list_id)->delete();
+            $taskList = TaskList::query()->where('id', $list_id)->delete();
         } catch (Exception $exception) {
             return response()->json($exception->getMessage())->setStatusCode(400, 'Bad request');
         }
