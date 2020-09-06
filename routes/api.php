@@ -13,15 +13,7 @@ Route::get('/test', function () {
 //Route::middleware('auth:api')->Route::post('/users/login', 'UserController@login');
 //
 //Route::middleware('auth:api')->post('/users/logout', 'UserController@logout');
-//
-//
-//Route::prefix('categories')->group(function () {
-//    Route::get('/', 'CategoryController@index');
-//    Route::get('/{category}', 'CategoryController@show');
-//    Route::middleware('auth:api')->post('/', 'CategoryController@store');
-//    Route::middleware('auth:api')->patch('/{category}', 'CategoryController@update');
-//    Route::middleware('auth:api')->delete('/{category}', 'CategoryController@destroy');
-//});
+
 Route::prefix('/{desk_id}')->group(function () {
     Route::prefix('/list')->group(function () {
         Route::get('', 'TaskListController@index');

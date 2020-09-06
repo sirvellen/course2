@@ -24,7 +24,7 @@ class TaskListRequest extends FormRequest
     public function rules()
     {
         return [
-            'list_name' => 'max:20'
+            'list_name' => 'required|string|max:25'
         ];
     }
 }

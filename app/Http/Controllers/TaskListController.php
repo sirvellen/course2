@@ -7,6 +7,7 @@ use App\Http\Requests\TaskListUpdateRequest;
 use App\TaskList;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class TaskListController extends Controller
 {
@@ -28,6 +29,13 @@ class TaskListController extends Controller
      */
     public function store(TaskListRequest $request)
     {
+
+        $validated = $request->validated();
+
+        if ($validated->fails()) {
+            return response($validated->messages(), 200);
+        }
+
         if ($tasklist = TaskList::create([
             'desk_id' => $request->desk_id,
             'list_name' => $request->list_name,

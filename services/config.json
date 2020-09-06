@@ -1,12 +1,12 @@
 {
     "applications": {
-        "someservice": {
+        "course": {
             "type": "php",
             "processes": {
                 "max": 50,
                 "spare": 50
             },
-            "root": "var/www/html/course/public",
+            "root": "/var/www/html/course/public",
             "index": "index.php",
             "script": "index.php",
             "options": {
@@ -16,7 +16,7 @@
     },
     "listeners": {
         "*:8080": {
-            "pass": "applications/someservice"
+            "pass": "applications/course"
         }
     }
 }
