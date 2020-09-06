@@ -22,7 +22,7 @@ class TaskController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response|object
      */
     public function store(TaskRequest $request)
@@ -33,19 +33,22 @@ class TaskController extends Controller
             return response($validated->messages(), 400);
         }
 
-        try {$task = Task::create([
-            'list_id' => $request->list_id,
-            'task_name' => $request->task_name,
-            'task_description' => $request->task_description,
-        ]);} catch (TaskException $exception) {
+        try {
+            $task = Task::create([
+                'list_id' => $request->list_id,
+                'task_name' => $request->task_name,
+                'task_description' => $request->task_description,
+            ]);
+        } catch (TaskException $exception) {
             return response()->json($exception->getMessage())->setStatusCode(400, 'Bad request');
-        } return response()->json($task)->setStatusCode(201, 'Successful Created');
+        }
+        return response()->json($task)->setStatusCode(201, 'Successful Created');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response|object
      */
     public function show(Request $request)
@@ -61,8 +64,8 @@ class TaskController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response|object
      */
     public function update(TaskRequest $request)
@@ -79,7 +82,7 @@ class TaskController extends Controller
                     'task_description' => $request->task_description,
                 ]);
         } catch (TaskException $exception) {
-            return  response()->json($exception->getMessage())->setStatusCode(400, 'Bad request');
+            return response()->json($exception->getMessage())->setStatusCode(400, 'Bad request');
         }
         return response()->json($task)->setStatusCode(202, 'Successful Edited');
     }
@@ -87,7 +90,7 @@ class TaskController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response|object
      */
     public function destroy(Request $request)

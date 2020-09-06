@@ -39,13 +39,13 @@ class TaskListController extends Controller
 
         try {
             $tasklist = TaskList::create([
-            'desk_id' => $request->desk_id,
-            'list_name' => $request->list_name,
+                'desk_id' => $request->desk_id,
+                'list_name' => $request->list_name,
             ]);
         } catch (TaskException $exception) {
             return response()->json($exception->getMessage())->setStatusCode(400, 'Bad request');
         }
-            return response()->json($tasklist)->setStatusCode(201, 'Successful Created');
+        return response()->json($tasklist)->setStatusCode(201, 'Successful Created');
     }
 
     /**
