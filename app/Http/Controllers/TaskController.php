@@ -38,7 +38,7 @@ class TaskController extends Controller
             'task_name' => $request->task_name,
             'task_description' => $request->task_description,
         ]);} catch (TaskException $exception) {
-            return response()->json()->setStatusCode(400, 'Bad request');
+            return response()->json($exception->getMessage())->setStatusCode(400, 'Bad request');
         } return response()->json($task)->setStatusCode(201, 'Successful Created');
     }
 
@@ -53,7 +53,7 @@ class TaskController extends Controller
         try {
             $data = Task::select()->where('id', $request->task_id)->get();
         } catch (TaskException $exception) {
-            return response()->json()->setStatusCode(400, 'Bad request');
+            return response()->json($exception->getMessage())->setStatusCode(400, 'Bad request');
         }
         return response()->json($data)->setStatusCode(201, 'Successful Found');
     }
@@ -79,7 +79,7 @@ class TaskController extends Controller
                     'task_description' => $request->task_description,
                 ]);
         } catch (TaskException $exception) {
-            return  response()->json()->setStatusCode(400, 'Bad request');
+            return  response()->json($exception->getMessage())->setStatusCode(400, 'Bad request');
         }
         return response()->json($task)->setStatusCode(202, 'Successful Edited');
     }
@@ -95,7 +95,7 @@ class TaskController extends Controller
         try {
             $task = Task::query()->where('id', $request->task_id)->delete();
         } catch (TaskException $exception) {
-            return response()->json()->setStatusCode(400, 'Bad request');
+            return response()->json($exception->getMessage())->setStatusCode(400, 'Bad request');
         }
         return response()->json($task)->setStatusCode(202, 'Successful deleted');
     }
@@ -105,7 +105,7 @@ class TaskController extends Controller
         try {
             $task = Task::query()->where('id', $request->task_id)->update(['task_done' => true]);
         } catch (TaskException $exception) {
-            return response()->json()->setStatusCode(400, 'Bad request');
+            return response()->json($exception->getMessage())->setStatusCode(400, 'Bad request');
         }
         return response()->json($task)->setStatusCode(202, 'Successful marked');
     }
@@ -115,7 +115,7 @@ class TaskController extends Controller
         try {
             $task = Task::query()->where('id', $request->task_id)->update(['task_done' => false]);
         } catch (TaskException $exception) {
-            return response()->json()->setStatusCode(400, 'Bad request');
+            return response()->json($exception->getMessage())->setStatusCode(400, 'Bad request');
         }
         return response()->json($task)->setStatusCode(202, 'Successful marked');
     }
