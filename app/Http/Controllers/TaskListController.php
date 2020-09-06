@@ -55,7 +55,7 @@ class TaskListController extends Controller
      */
     public function show(Request $request)
     {
-//        $data = TaskList::select('id', 'desk_id', 'list_name')->where('id', $request->list_id)->get();
+//      todo:  $data = TaskList::select('id', 'desk_id', 'list_name')->where('id', $request->list_id)->get();
         try {
             $data = TaskList::select()->where('id', $request->list_id)->get();
         } catch (Exception $exception) {
