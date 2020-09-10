@@ -42,8 +42,5 @@ Route::prefix('/{desk_id}')->group(function () {
 });
 
 // Exception routes
-<<<<<<< Updated upstream
-Route::get('exception/index', 'ExceptionController@index');
-=======
 // Route::get('exception/index', 'ExceptionController@index');
->>>>>>> Stashed changes
+
