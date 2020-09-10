@@ -6,14 +6,6 @@ Route::get('/test', function () {
     return __DIR__ . '/../index.php';
 })->name('my route');
 
-//Route::middleware('auth:api')->Route::get('/users', 'UserController@index');
-//
-//Route::middleware('auth:api')->Route::post('/users/signup', 'UserController@store');
-//
-//Route::middleware('auth:api')->Route::post('/users/login', 'UserController@login');
-//
-//Route::middleware('auth:api')->post('/users/logout', 'UserController@logout');
-
 Route::prefix('/users')->group(function (){
     Route::get('', 'UserController@index');
     Route::post('/register', 'UserController@store');
@@ -43,4 +35,4 @@ Route::prefix('/{desk_id}')->group(function () {
 });
 
 // Exception routes
-Route::get('exception/index', 'ExceptionController@index');
+//Route::get('exception/index', 'ExceptionController@index');
