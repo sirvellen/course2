@@ -34,5 +34,6 @@ Route::prefix('/{desk_id}')->group(function () {
     });
 });
 
+Route::post('mail', 'MailController@mail');
 // Exception routes
 Route::get('exception/index', 'ExceptionController@index');
