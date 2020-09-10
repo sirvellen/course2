@@ -17,9 +17,9 @@ Route::get('/test', function () {
 Route::prefix('/users')->group(function (){
     Route::get('', 'UserController@index');
     Route::post('/register', 'UserController@store');
-    #Route::post('/update', 'UserController@update');
-    Route::post('/login', 'TaskListController@login');
-    Route::post('/logout', 'TaskListController@logout');
+    Route::post('/update', 'UserController@update');
+    Route::post('/login', 'UserController@login');
+    Route::post('/logout', 'UserController@logout');
 });
 
 Route::prefix('/{desk_id}')->group(function () {
@@ -40,7 +40,7 @@ Route::prefix('/{desk_id}')->group(function () {
             });
         });
     });
-});
+#});
 
 // Exception routes
-Route::get('exception/index', 'ExceptionController@index');
+#Route::get('exception/index', 'ExceptionController@index');
