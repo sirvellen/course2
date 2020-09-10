@@ -15,10 +15,10 @@ Route::get('/test', function () {
 //Route::middleware('auth:api')->post('/users/logout', 'UserController@logout');
 
 Route::prefix('/user')->group(function (){
-    Route::post('/register', 'UserController@store');
-    Route::post('/update', 'UserController@update');
-    Route::post('/login', 'TaskListController@login');
-    Route::post('/logout', 'TaskListController@logout');
+    Route::middleware('auth:api')->post('/register', 'UserController@store');
+    Route::middleware('auth:api')->post('/update', 'UserController@update');
+    Route::middleware('auth:api')->post('/login', 'TaskListController@login');
+    Route::middleware('auth:api')->post('/logout', 'TaskListController@logout');
 });
 
 Route::prefix('/{desk_id}')->group(function () {
@@ -42,4 +42,8 @@ Route::prefix('/{desk_id}')->group(function () {
 });
 
 // Exception routes
+<<<<<<< Updated upstream
 Route::get('exception/index', 'ExceptionController@index');
+=======
+// Route::get('exception/index', 'ExceptionController@index');
+>>>>>>> Stashed changes
