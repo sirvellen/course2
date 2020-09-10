@@ -14,6 +14,13 @@ Route::get('/test', function () {
 //
 //Route::middleware('auth:api')->post('/users/logout', 'UserController@logout');
 
+Route::prefix('/user')->group(function (){
+    Route::post('/register', 'UserController@store');
+    Route::post('/update', 'UserController@update');
+    Route::post('/login', 'TaskListController@login');
+    Route::post('/logout', 'TaskListController@logout');
+});
+
 Route::prefix('/{desk_id}')->group(function () {
     Route::prefix('/list')->group(function () {
         Route::get('', 'TaskListController@index');

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ApiRequest;
+use App\Http\Requests\AuthorizationRequest;
 use App\Http\Requests\RegisterRequest;
 use App\User;
 use Illuminate\Http\Request;
@@ -18,35 +19,85 @@ class UserController extends Controller
         return User::all();
     }
 
-    public function store(RegisterRequest $request)
+    /**
+     * @param AuthorizationRequest $request
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\JsonResponse|\Illuminate\Http\Response|object
+     */
+    public function store(AuthorizationRequest $request)
     {
+        /** @var Validator $validator */
+        $validator = Validator::make($request->all(), $request->rules());
+
+        if ($validator->fails()) {
+            return response($validator->messages(), 200);
+        }
+
+        /** @var User $userId */
         if ($userId = User::create([
-            'first_name' => $request->first_name,
-            'surname' => $request->surname,
-            'phone' => $request->phone,
+            'username' => $request->username,
+            'email' => $request->email,
             'password' => Hash::make($request->password),
+            'role' => $request->role,
+            'department' => $request->department,
+            'position' => $request->position
         ])) {
             return response()->json([
                 'id' => $userId,
-            ])->setStatusCode(201, 'Created');
+            ])->setStatusCode(201, 'New user successfully registered');
         }
         return response()->json([
 
         ])->setStatusCode(422, 'Unprocessable entity');
     }
 
-    public function login(Request $request)
+    /**
+     * @param AuthorizationRequest $request
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\JsonResponse|\Illuminate\Http\Response|object
+     */
+    public function update(AuthorizationRequest $request)
     {
-        $validateData = Validator::make($request->all(), [
-            'phone' => 'required',
-            'password' => 'required',
-        ]);
+        /** @var Validator $validator */
+        $validator = Validator::make($request->all(), $request->rules());
 
-        if ($validateData->fails()) {
-            return $validateData->messages();
+        if ($validator->fails()) {
+            return response($validator->messages(), 200);
         }
 
-        if ($user = User::query()->where(['phone' => $request->phone,])->first()
+        try {
+            /** @var User $user */
+            $user = User::query()->where('email', $request->email)
+                ->update([
+                    'username' => $request->username,
+                    'email' => $request->email,
+                    'password' => Hash::make($request->password),
+                    'role' => $request->role,
+                    'department' => $request->department,
+                    'position' => $request->position
+                ]);
+        } catch (Exception $exception) {
+            return response()->json($exception->getMessage())->setStatusCode(400, 'Bad request');
+        }
+        return response()->json($user)->setStatusCode(202, 'Successful Edited');
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\JsonResponse|\Illuminate\Http\Response|object
+     */
+    public function login(Request $request)
+    {
+        /** @var Validator $validator */
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|max:320|string|email|exists:users,email',
+            'password' => 'required|string',
+        ]);
+
+        if ($validator->fails()) {
+            return response($validator->messages(), 200);
+        }
+
+        /** @var User $user */
+        if ($user = User::query()->where(['email' => $request->email,])->first()
             and
             Hash::check($request->password, $user->password)
         ) {
@@ -55,7 +106,7 @@ class UserController extends Controller
 
             return response()->json([
                 'auth_token' => $user->api_token,
-            ])->setStatusCode(200, 'Ok');
+            ])->setStatusCode(200, 'Logged in successfully');
         }
 
         return response()->json(['login' => 'Incorrect login or password'])->setStatusCode(422, 'Unprocessable entity');
@@ -67,6 +118,6 @@ class UserController extends Controller
 
         return response()->json([
             'message' => 'logged out',
-        ])->setStatusCode(200, 'Ok');
+        ])->setStatusCode(200, 'Logged out successfully');
     }
 }
