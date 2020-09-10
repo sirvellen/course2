@@ -18,7 +18,7 @@ Route::prefix('/user')->group(function (){
     Route::middleware('auth:api')->Route::post('/register', 'UserController@store');
     Route::middleware('auth:api')->Route::post('/update', 'UserController@update');
     Route::middleware('auth:api')->Route::post('/login', 'UserController@login');
-    Route::middleware('auth:api')->Route::post('/logout', 'UserController@logout');
+    Route::middleware('auth:api')->post('/logout', 'UserController@logout');
 });
 
 Route::prefix('/{desk_id}')->group(function () {
