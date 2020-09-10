@@ -27,7 +27,7 @@ class UserController extends Controller
     {
         /** @var Validator $validator */
         $validator = Validator::make($request->all(), $request->rules());
-
+        dd($validator);
         if ($validator->fails()) {
             return response($validator->messages(), 200);
         }
