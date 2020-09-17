@@ -14,7 +14,7 @@ Route::get('/test', function () {
 //
 //Route::middleware('auth:api')->post('/users/logout', 'UserController@logout');
 
-Route::prefix('/user')->group(function (){
+Route::prefix('/users')->group(function (){
     Route::post('/register', 'UserController@store');
     Route::post('/update', 'UserController@update');
     Route::post('/login', 'TaskListController@login');
