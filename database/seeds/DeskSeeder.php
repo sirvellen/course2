@@ -11,6 +11,8 @@ class DeskSeeder extends Seeder
      */
     public function run()
     {
-        $this->call(DeskSeeder::class);
+        DB::table('desks')->insert([
+            'desk_name' => 'desk',
+        ]);
     }
 }

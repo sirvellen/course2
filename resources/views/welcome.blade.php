@@ -64,6 +64,6 @@
         </style>
     </head>
     <body>
-    <h1>Horizon API page</h1>
+    <h1>Harmoner API page</h1>
     </body>
 </html>
