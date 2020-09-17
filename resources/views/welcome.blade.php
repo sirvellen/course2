@@ -64,6 +64,6 @@
         </style>
     </head>
     <body>
-    <h1>Direwolf Smart Task API page</h1>
+    <h1>Horizon API page</h1>
     </body>
 </html>
