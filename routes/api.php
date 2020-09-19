@@ -12,13 +12,12 @@ Route::get('/test', function () {
 //
 //Route::middleware('auth:api')->Route::post('/users/login', 'UserController@login');
 //
-//Route::middleware('auth:api')->post('/users/logout', 'UserController@logout');
-
+//Route::middleware('auth:api')->post('/users/logout', 'UserController@logout');]
 Route::prefix('/users')->group(function (){
     Route::post('/register', 'UserController@store');
-    Route::post('/update', 'UserController@update');
-    Route::post('/login', 'TaskListController@login');
-    Route::post('/logout', 'TaskListController@logout');
+    Route::middleware('auth:api')->post('/update', 'UserController@update');
+    Route::middleware('auth:api')->post('/login', 'TaskListController@login');
+    Route::middleware('auth:api')->post('/logout', 'TaskListController@logout');
 });
 
 Route::prefix('/{desk_id}')->group(function () {

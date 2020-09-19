@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ApiRequest;
 use App\Http\Requests\AuthorizationRequest;
 use App\Http\Requests\RegisterRequest;
 use App\User;
@@ -14,6 +13,11 @@ use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('guest')->except('logout');
+    }
+
     public function index()
     {
         return User::all();
@@ -23,31 +27,33 @@ class UserController extends Controller
      * @param AuthorizationRequest $request
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\JsonResponse|\Illuminate\Http\Response|object
      */
-    public function store(AuthorizationRequest $request)
+    public function store(Request $request)
     {
         /** @var Validator $validator */
-        $validator = Validator::make($request->all(), $request->rules());
+        $validator = Validator::make($request->all(), [
+            'username' => 'required|string',
+            'email' => 'required|string',
+            'password' => 'required|string',
+            'role' => 'required|string'
+        ]);
 
         if ($validator->fails()) {
             return response($validator->messages(), 200);
         }
 
         /** @var User $userId */
-        if ($userId = User::create([
-            'username' => $request->username,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'role' => $request->role,
-            'department' => $request->department,
-            'position' => $request->position
-        ])) {
-            return response()->json([
-                'id' => $userId,
-            ])->setStatusCode(201, 'New user successfully registered');
+        try {
+            User::create([
+                'username' => $request->username,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'role' => $request->role,
+            ]);
+        } catch (Exception $exception) {
+            return response()->json()->setStatusCode(422, 'Unprocessable entity');
         }
-        return response()->json([
-
-        ])->setStatusCode(422, 'Unprocessable entity');
+        $user = $this->login($request);
+        return response()->json($user)->setStatusCode(201, 'New user successfully registered');
     }
 
     /**
@@ -105,7 +111,10 @@ class UserController extends Controller
             $user->save();
 
             return response()->json([
+                'username' => $user->username,
                 'auth_token' => $user->api_token,
+                'email' => $user->email,
+                'role' => $user->role,
             ])->setStatusCode(200, 'Logged in successfully');
         }
 

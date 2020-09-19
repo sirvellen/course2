@@ -27,7 +27,7 @@ class ListsTableForeignKey extends Migration
     public function down()
     {
         Schema::table('task_lists', function (Blueprint $table) {
-            $table->dropForeign('desk_id');
+            $table->dropForeign(['desk_id']);
         });
     }
 }

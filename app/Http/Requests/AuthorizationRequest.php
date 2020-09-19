@@ -25,11 +25,7 @@ class AuthorizationRequest extends FormRequest
     {
         return [
             'username' => 'required|string|between:1,60',
-            'email' => 'required|string|max:320|email|unique:users,email',
             'password' => 'required|string|between:1,127',
-            'role' => 'required|string',
-            'department' => 'required|string',
-            'position' => 'required|string'
         ];
     }
 }
