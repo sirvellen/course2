@@ -31,14 +31,13 @@ class UserController extends Controller
     {
         /** @var Validator $validator */
         $validator = Validator::make($request->all(), [
-            'username' => 'required|string',
-            'email' => 'required|string',
-            'password' => 'required|string',
-            'role' => 'required|string'
+            'username' => 'required|string|unique:users,username|min:4|max:24|regex:[^(?=.{4,32}$)(?![_.-])(?!.*[_.]{2})[a-zA-Z0-9._-]+(?<![_.])$]',
+            'email' => 'required|string|email:rfc,dns|unique:users,email|max:129',
+            'password' => 'required|string|min:8|max:24|regex:[^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,24}$]',
         ]);
 
         if ($validator->fails()) {
-            return response($validator->messages(), 200);
+            return response($validator->messages(), 400);
         }
 
         /** @var User $userId */
@@ -47,7 +46,6 @@ class UserController extends Controller
                 'username' => $request->username,
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
-                'role' => $request->role,
             ]);
         } catch (Exception $exception) {
             return response()->json()->setStatusCode(422, 'Unprocessable entity');
@@ -63,7 +61,11 @@ class UserController extends Controller
     public function update(AuthorizationRequest $request)
     {
         /** @var Validator $validator */
-        $validator = Validator::make($request->all(), $request->rules());
+        $validator = Validator::make($request->all(), [
+            'username' => 'required|string|unique:users,username|min:4|max:24|regex:[^(?=.{4,32}$)(?![_.-])(?!.*[_.]{2})[a-zA-Z0-9._-]+(?<![_.])$]',
+            'email' => 'required|string|email:rfc,dns|unique:users,email|max:129',
+            'password' => 'required|string|min:8|max:24|regex:[^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,24}$]',
+        ]);
 
         if ($validator->fails()) {
             return response($validator->messages(), 200);
@@ -77,8 +79,6 @@ class UserController extends Controller
                     'email' => $request->email,
                     'password' => Hash::make($request->password),
                     'role' => $request->role,
-                    'department' => $request->department,
-                    'position' => $request->position
                 ]);
         } catch (Exception $exception) {
             return response()->json($exception->getMessage())->setStatusCode(400, 'Bad request');
@@ -94,8 +94,8 @@ class UserController extends Controller
     {
         /** @var Validator $validator */
         $validator = Validator::make($request->all(), [
-            'email' => 'required|max:320|string|email|exists:users,email',
-            'password' => 'required|string',
+            'email' => 'required|string|email:rfc,dns|unique:users,email|max:129',
+            'password' => 'required|string|min:8|max:24|regex:[^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,24}$]',
         ]);
 
         if ($validator->fails()) {
