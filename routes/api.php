@@ -15,9 +15,9 @@ Route::get('/test', function () {
 //Route::middleware('auth:api')->post('/users/logout', 'UserController@logout');]
 Route::prefix('/users')->group(function (){
     Route::post('/register', 'UserController@store');
-    Route::middleware('auth:api')->post('/update', 'UserController@update');
-    Route::middleware('auth:api')->post('/login', 'TaskListController@login');
-    Route::middleware('auth:api')->post('/logout', 'TaskListController@logout');
+    Route::post('/update', 'UserController@update');
+    Route::post('/login', 'UserController@login');
+    Route::post('/logout', 'UserController@logout');
 });
 
 Route::prefix('/{desk_id}')->group(function () {
