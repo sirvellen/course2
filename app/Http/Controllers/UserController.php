@@ -123,7 +123,7 @@ class UserController extends Controller
 
     public function logout()
     {
-        Auth::user()->logout();
+        Auth::logout();
 
         return response()->json([
             'message' => 'logged out',
