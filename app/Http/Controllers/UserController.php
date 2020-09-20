@@ -23,6 +23,11 @@ class UserController extends Controller
         return User::all();
     }
 
+    public function show()
+    {
+        return User::all();
+    }
+
     /**
      * @param AuthorizationRequest $request
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\JsonResponse|\Illuminate\Http\Response|object
