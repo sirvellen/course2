@@ -83,7 +83,7 @@ class UserController extends Controller
     {
         /** @var Validator $validator */
         $validator = Validator::make($request->all(), [
-            'username' => 'string|unique:users,username|min:4|max:24|regex:[^(?=.{4,32}$)(?![_.-])(?!.*[_.]{2})[a-zA-Z0-9._-]+(?<![_.])$]',
+            'username' => 'string|unique:users,username|min:1|max:24|regex:[^(?=.{1,24}$)(?![_.-])(?!.*[_.]{2})[a-zA-Z0-9._-]+(?<![_.])$]',
             'email' => 'required|string|email:rfc,dns|unique:users,email|max:129',
             'password' => 'required|string|min:8|max:24|regex:[^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,24}$]',
         ]);
@@ -139,8 +139,7 @@ class UserController extends Controller
                 'role' => $user->role,
             ])->setStatusCode(200, 'Logged in successfully');
         }
-
-        return response()->json(['login' => 'Incorrect login or password'])->setStatusCode(422, 'Unprocessable entity');
+        return response()->json(['login' => 'Некорректный логин или пароль'])->setStatusCode(422, 'Unprocessable entity');
     }
 
     public function logout()
