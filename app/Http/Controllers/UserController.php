@@ -132,6 +132,7 @@ class UserController extends Controller
             $user->save();
 
             return response()->json([
+                'user_id' => $user->id,
                 'username' => $user->username,
                 'auth_token' => $user->api_token,
                 'email' => $user->email,
