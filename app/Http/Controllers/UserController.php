@@ -15,17 +15,33 @@ class UserController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('guest')->except('logout');
+        $this->middleware('guest')->except('logout', 'index');
     }
 
     public function index()
     {
-        return User::all();
+        $user = User::select('id', 'username', 'email', 'role')->get();
+        return response()->json($user);
     }
 
-    public function show()
+    public function show(Request $request)
     {
-        return User::all();
+        $validated = Validator::make($request->all(), [
+        'user_id' => 'int'
+        ]);
+
+        if ($validated->fails()) {
+            return response($validated->messages(), 400);
+        }
+
+        $user = User::select('id', 'username', 'email', 'role')->where('id', $request->user_id)->get();
+
+        return response()->json([
+            'user_id' => $user->user_id,
+            'username' => $user->username,
+            'email' => $user->email,
+            'role' => $user->role
+        ])->setStatusCode('200', 'Ok');
     }
 
     /**

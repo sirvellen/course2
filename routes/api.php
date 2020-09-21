@@ -15,6 +15,7 @@ Route::get('/test', function () {
 //Route::middleware('auth:api')->post('/users/logout', 'UserController@logout');]
 Route::prefix('/users')->group(function (){
     Route::get('/', 'UserController@index');
+    Route::post('/', 'UserController@show');
     Route::post('/register', 'UserController@store');
     Route::post('/update', 'UserController@update');
     Route::post('/login', 'UserController@login');
