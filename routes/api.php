@@ -19,7 +19,7 @@ Route::prefix('/users')->group(function (){
     Route::post('/register', 'UserController@store');
     Route::patch('/update', 'UserController@update');
     Route::post('/login', 'UserController@login');
-    Route::post('/logout', 'UserController@logout');
+    Route::get('/logout/{id}', 'UserController@logout');
 });
 
 Route::prefix('/{desk_id}')->group(function () {
