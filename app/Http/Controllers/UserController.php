@@ -26,6 +26,7 @@ class UserController extends Controller
 
     public function show(Request $request)
     {
+        dd($request->user_id);
         $validated = Validator::make($request->all(), [
         'user_id' => 'int'
         ]);
