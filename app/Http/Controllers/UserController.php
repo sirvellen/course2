@@ -26,22 +26,9 @@ class UserController extends Controller
 
     public function show(Request $request)
     {
-        $validated = Validator::make($request->all(), [
-        'user_id' => 'int'
-        ]);
-
-        if ($validated->fails()) {
-            return response($validated->messages(), 400);
-        }
-
-        $user = User::select('id', 'username', 'email', 'role')->where('id', $request->user_id)->get();
-
-        return response()->json([
-            'user_id' => $user->user_id,
-            'username' => $user->username,
-            'email' => $user->email,
-            'role' => $user->role
-        ])->setStatusCode('200', 'Ok');
+        $user_id = $request->id;
+        $user = User::select()->where('id', $request->id)->get();
+        return response()->json($user)->setStatusCode('200', 'Ok');
     }
 
     /**
@@ -149,5 +136,9 @@ class UserController extends Controller
         return response()->json([
             'message' => 'logged out',
         ])->setStatusCode(200, 'Logged out successfully');
+    }
+
+    public function destroy() {
+
     }
 }
