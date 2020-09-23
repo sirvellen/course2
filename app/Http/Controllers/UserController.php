@@ -39,7 +39,7 @@ class UserController extends Controller
     {
         /** @var Validator $validator */
         $validator = Validator::make($request->all(), [
-            'username' => 'required|string|min:4|max:24|regex:[^(?=.{4,32}$)(?![_.-])(?!.*[_.]{2})[a-zA-Z0-9._-]+(?<![_.])$]',
+            'username' => 'string|min:1|max:24|regex:[^(?=.{1,32}$)(?![_.-])(?!.*[_.]{2})[a-zA-Z0-9._-]+(?<![_.])$]',
             'email' => 'required|string|email:rfc,dns|unique:users,email|max:129',
             'password' => 'required|string|min:8|max:24|regex:[^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,24}$]',
         ]);
@@ -107,7 +107,7 @@ class UserController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response($validator->messages(), 200);
+            return response($validator->messages(), 400);
         }
 
         /** @var User $user */
