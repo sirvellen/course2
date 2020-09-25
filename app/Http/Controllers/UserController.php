@@ -103,7 +103,7 @@ class UserController extends Controller
         /** @var Validator $validator */
         $validator = Validator::make($request->all(), [
             'email' => 'required|string|email:rfc,dns|max:129',
-            'password' => 'required|string',
+            'password' => 'required|string|min:8|max:24',
         ]);
 
         if ($validator->fails()) {
