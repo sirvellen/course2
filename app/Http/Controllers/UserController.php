@@ -56,10 +56,10 @@ class UserController extends Controller
                 'password' => Hash::make($request->password),
             ]);
         } catch (Exception $exception) {
-            return response()->json()->setStatusCode(422, 'Unprocessable entity');
+            return response()->json($exception->getMessage())->setStatusCode(422, 'Необрабатываемый экземпляр');
         }
         $user = $this->login($request);
-        return response()->json($user)->setStatusCode(201, 'New user successfully registered');
+        return response()->json($user)->setStatusCode(201, 'Успешно зарегистрирован');
     }
 
     /**
@@ -70,9 +70,9 @@ class UserController extends Controller
     {
         /** @var Validator $validator */
         $validator = Validator::make($request->all(), [
-            'username' => 'string|unique:users,username|min:1|max:24|regex:[^(?=.{1,24}$)(?![_.-])(?!.*[_.]{2})[a-zA-Zа-яА-Я0-9._-]+(?<![_.])$]',
+            'username' => 'string|min:1|max:24|regex:[^(?=.{1,24}$)(?![_.-])(?!.*[_.]{2})[a-zA-Zа-яА-Я0-9._-]+(?<![_.-])$]',
             'email' => 'required|string|email:rfc,dns|unique:users,email|max:129',
-            'password' => 'required|string|min:8|max:24|regex:[мн&+,:;=?@#|\'<>.-^*()%!]).{8,24}$]',
+            'password' => ['required', 'string', 'min:8', 'max:24', 'regex:/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).(?=.*[$&+,:;=?@#|\'<>.-^*()%!]).{8,24}$/'],
         ]);
 
         if ($validator->fails()) {
@@ -89,9 +89,9 @@ class UserController extends Controller
                     'role' => $request->role,
                 ]);
         } catch (Exception $exception) {
-            return response()->json($exception->getMessage())->setStatusCode(400, 'Bad request');
+            return response()->json($exception->getMessage())->setStatusCode(422, 'Необрабатываемый экземпляр');
         }
-        return response()->json($user)->setStatusCode(202, 'Successful Edited');
+        return response()->json($user)->setStatusCode(202, 'Успешно отредактировано');
     }
 
     /**
@@ -124,9 +124,9 @@ class UserController extends Controller
                 'auth_token' => $user->api_token,
                 'email' => $user->email,
                 'role' => $user->role,
-            ])->setStatusCode(200, 'Logged in successfully');
+            ])->setStatusCode(200, 'Успешная авторизация');
         }
-        return response()->json(['login' => 'Некорректный логин или пароль'])->setStatusCode(422, 'Unprocessable entity');
+        return response()->json(['login' => 'Некорректный логин или пароль'])->setStatusCode(422, 'Необрабатываемый экземпляр');
     }
 
     public function logout($id)
@@ -138,7 +138,7 @@ class UserController extends Controller
 
         return response()->json([
             'message' => 'logged out',
-        ])->setStatusCode(200, 'Logged out successfully');
+        ])->setStatusCode(200, 'Успешный выход');
     }
 
     public function destroy() {
