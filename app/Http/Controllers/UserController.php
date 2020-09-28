@@ -39,7 +39,7 @@ class UserController extends Controller
     {
         /** @var Validator $validator */
         $validator = Validator::make($request->all(), [
-            'username' => 'nullable|string|min:1|max:24|regex:[^(?=.{1,24}$)(?![_.-])(?!.*[_.]{2})[a-zA-ZА-Яа-яЁё0-9._-]*[А-ЯЦцУуШшЩщФфЫыРрЭэЧчТтЬьЮюЪъХхЁа-яёa-zA-Z0-9\- @%;()\$\.\,\"\'].+(?<![_.-])$]',
+            'username' => 'nullable|string|min:1|max:24|regex:[^(?=.{1,24}$)(?![_.-])(?!.*[_.]{2})[a-zA-ZА-Яа-яЁё0-9._-].[А-ЯЦцУуШшЩщФфЫыРрЭэЧчТтЬьЮюЪъХхЁа-яёa-zA-Z0-9\- @%;()\$\.\,\"\'].+(?<![_.-])$]',
             'email' => 'required|string|email:rfc,dns|unique:users,email|max:129',
             'password' => ['required', 'string', 'min:8', 'max:24', 'regex:/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])*(?=.*[$&+,:;=?@#|\'<>.-^*()%!]).{8,24}$/'],
         ]);
@@ -70,7 +70,7 @@ class UserController extends Controller
     {
         /** @var Validator $validator */
         $validator = Validator::make($request->all(), [
-            'username' => 'nullable|string|min:1|max:24|regex:[^(?=.{1,24}$)(?![_.-])(?!.*[_.]{2})[a-zA-Zа-яА-Я0-9._-]+(?<![_.-])$]',
+            'username' => 'nullable|string|min:1|max:24|regex:[^(?=.{1,24}$)(?![_.-])(?!.*[_.]{2})[a-zA-ZА-Яа-яЁё0-9._-]*[А-ЯЦцУуШшЩщФфЫыРрЭэЧчТтЬьЮюЪъХхЁа-яёa-zA-Z0-9\- @%;()\$\.\,\"\'].+(?<![_.-])$]',
             'email' => 'nullable|string|email:rfc,dns|unique:users,email|max:129',
             'password' => ['nullable', 'string', 'min:8', 'max:24', 'regex:/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])*(?=.*[$&+,:;=?@#|\'<>.-^*()%!]).{8,24}$/'],
         ]);
