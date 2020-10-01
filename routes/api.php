@@ -13,6 +13,9 @@ Route::get('/test', function () {
 //Route::middleware('auth:api')->Route::post('/users/login', 'UserController@login');
 //
 //Route::middleware('auth:api')->post('/users/logout', 'UserController@logout');]
+
+
+
 Route::prefix('/users')->group(function (){
     Route::get('/', 'UserController@index');
     Route::post('/', 'UserController@show');
@@ -24,12 +27,12 @@ Route::prefix('/users')->group(function (){
 
 Route::prefix('/{desk_id}')->group(function () {
     Route::prefix('/list')->group(function () {
-        Route::get('', 'TaskListController@index');
-        Route::post('', 'TaskListController@store');
+        Route::get('/', 'TaskListController@index');
+        Route::post('/', 'TaskListController@store');
         Route::prefix('/{list_id}')->group(function () {
-            Route::get('', 'TaskListController@show');
-            Route::patch('', 'TaskListController@update');
-            Route::delete('', 'TaskListController@destroy');
+            Route::get('/', 'TaskListController@show');
+            Route::patch('/', 'TaskListController@update');
+            Route::delete('/', 'TaskListController@destroy');
             Route::prefix('/task')->group(function () {
                 Route::get('/', 'TaskController@show');
                 Route::post('/', 'TaskController@store');
