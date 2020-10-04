@@ -20,9 +20,16 @@ class CreateTasksTable extends Migration
             $table->text('task_description');
             $table->double('urgency')->default(1);
             $table->boolean('task_done')->nullable();
+            $table->boolean("is_private")->default(false);
+            $table->unsignedBigInteger('creator_id');
+            $table->unsignedBigInteger('assignee_id');
             $table->timestamps();
 
             $table->foreign('list_id')->references('id')->on('task_lists')
+                ->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('creator_id')->references('id')->on('users')
+                ->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('assignee_id')->references('id')->on('users')
                 ->onDelete('cascade')->onUpdate('cascade');
         });
     }

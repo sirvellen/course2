@@ -27,9 +27,16 @@ class TaskController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response|object
      */
-    public function store($desk_id, $list_id, $task_id, TaskRequest $request)
+    public function store($desk_id, $list_id, Request $request)
     {
-        $validated = Validator::make($request->all(), $request->rules());
+        $validated = Validator::make($request->all(), [
+            'user_id' => 'required|numeric',
+            'assignee_id' => 'required|numeric',
+            'task_name' => 'required|string|max:25',
+            'task_description' => 'nullable|string|max:250',
+            'urgency' => 'nullable|numeric|between:1,5',
+            'is_private' => 'nullable|bool',
+        ]);
 
         if ($validated->fails()) {
             return response($validated->messages(), 400);
@@ -37,14 +44,25 @@ class TaskController extends Controller
 
         try {
             $task = Task::create([
+                'creator_id' => $request->user_id,
+                'assignee_id' => $request->assignee_id,
                 'list_id' => $list_id,
                 'task_name' => $request->task_name,
                 'task_description' => $request->task_description,
+                'urgency' => $request->urgency,
+                'is_private' => $request->is_private,
             ]);
         } catch (Exception $exception) {
             return response()->json($exception->getMessage())->setStatusCode(400, 'Bad request');
         }
-        return response()->json($task)->setStatusCode(201, 'Successful Created');
+        return response()->json([
+            'id' => $task->id,
+            'list_id' => $task->list_id,
+            'task_name' => $task->task_name,
+            'task_description' => $task->task_description,
+            'urgency' => $task->urgency,
+            'is_private' => $task->is_private,
+        ])->setStatusCode(201, 'Successful Created');
     }
 
     /**

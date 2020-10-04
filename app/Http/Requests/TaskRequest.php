@@ -24,9 +24,12 @@ class TaskRequest extends FormRequest
     public function rules()
     {
         return [
+            'user_id' => 'required|numeric',
+            'assignee_id' => 'required|numeric',
             'task_name' => 'required|string|max:25',
-            'task_description' => 'string|max:250',
-            'urgency' => 'number|between:1,5'
+            'task_description' => 'nullable|string|max:250',
+            'urgency' => 'nullable|numeric|between:1,5',
+            'is_private' => 'nullable|bool',
         ];
     }
 }
