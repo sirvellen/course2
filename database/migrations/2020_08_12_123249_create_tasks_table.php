@@ -14,15 +14,16 @@ class CreateTasksTable extends Migration
     public function up()
     {
         Schema::create('tasks', function (Blueprint $table) {
-            $table->id();
+            $table->id('task_id');
             $table->unsignedBigInteger('list_id');
             $table->text('task_name');
             $table->text('task_description');
-            $table->double('urgency')->default(1);
-            $table->boolean('task_done')->nullable();
-            $table->boolean("is_private")->default(false);
             $table->unsignedBigInteger('creator_id');
             $table->unsignedBigInteger('assignee_id');
+            $table->date('deadline');
+            $table->double('urgency')->default(1);
+            $table->boolean('status')->default(1);
+            $table->boolean("is_private")->default(false);
             $table->timestamps();
 
             $table->foreign('list_id')->references('id')->on('task_lists')

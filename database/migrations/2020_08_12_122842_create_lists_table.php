@@ -14,9 +14,9 @@ class CreateListsTable extends Migration
     public function up()
     {
         Schema::create('task_lists', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('desk_id')->nullable();
-            $table->text('list_name')->unique();
+            $table->id('task_list_id');
+            $table->unsignedBigInteger('desk_id');
+            $table->text('list_name');
             $table->timestamps();
 
 

@@ -15,7 +15,13 @@ class CreateDesksTable extends Migration
     {
         Schema::create('desks', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->unsignedBigInteger('team_id');
+            $table->unsignedBigInteger('project_creator');
+            $table->string('project_name');
+            $table->string('project_description');
+            $table->date('project_deadline');
+            $table->boolean('project_is_done')->default(false);
+            $table->boolean('project_is_stopped')->default(false);
             $table->timestamps();
         });
     }
