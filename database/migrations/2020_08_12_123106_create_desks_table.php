@@ -20,8 +20,7 @@ class CreateDesksTable extends Migration
             $table->string('project_name');
             $table->string('project_description');
             $table->date('project_deadline');
-            $table->boolean('project_is_done')->default(false);
-            $table->boolean('project_is_stopped')->default(false);
+            $table->boolean('project_status')->default('active');
             $table->timestamps();
         });
     }

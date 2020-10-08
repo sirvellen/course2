@@ -41,7 +41,7 @@ class TaskListController extends Controller
                 'desk_id' => $desk_id,
                 'list_name' => $request->list_name,
             ]);
-        } catch (Exception $exception) {
+        } catch (\Exception $exception) {
             return response()->json($exception->getMessage())->setStatusCode(400, 'Bad request');
         }
         return response()->json($tasklist)->setStatusCode(201, 'Successful Created');
@@ -59,7 +59,7 @@ class TaskListController extends Controller
 //      todo:  $data = TaskList::select('id', 'desk_id', 'list_name')->where('id', $request->list_id)->get();
         try {
             $data = TaskList::select()->where('id', $list_id)->get();
-        } catch (Exception $exception) {
+        } catch (\Exception $exception) {
             return response()->json($exception->getMessage())->setStatusCode(400, 'Bad request');
         }
         return response()->json($data)->setStatusCode(200, 'Successful Found');
@@ -83,7 +83,7 @@ class TaskListController extends Controller
         try {
             $tasklist = TaskList::query()->where('id', $list_id)
                 ->update(['list_name' => $request->list_name]);
-        } catch (Exception $exception) {
+        } catch (\Exception $exception) {
             return response()->json($exception->getMessage())->setStatusCode(400, 'Bad request');
         }
         return response()->json($tasklist)->setStatusCode(202, 'Successful Edited');
@@ -99,7 +99,7 @@ class TaskListController extends Controller
     {
         try {
             $taskList = TaskList::query()->where('id', $list_id)->delete();
-        } catch (Exception $exception) {
+        } catch (\Exception $exception) {
             return response()->json($exception->getMessage())->setStatusCode(400, 'Bad request');
         }
         return response()->json($taskList)->setStatusCode(200, 'Successful deleted');
