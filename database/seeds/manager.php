@@ -11,11 +11,11 @@ class manager extends Seeder
      */
     public function run()
     {
-        DB::table('users')->insert([
-            'username' => 'manager',
-            'email' => 'manager@mail.ru',
-            'password' => 'manager',
-            'role' => 'manager',
-        ]);
+//        DB::table('users')->insert([
+//            'username' => 'manager',
+//            'email' => 'manager@mail.ru',
+//            'password' => 'manager',
+//            'role' => 'manager',
+//        ]);
     }
 }

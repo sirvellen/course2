@@ -15,12 +15,12 @@ class CreateDesksTable extends Migration
     {
         Schema::create('desks', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('team_id');
+//            $table->unsignedBigInteger('team_id');
             $table->unsignedBigInteger('project_creator');
             $table->string('project_name');
             $table->string('project_description');
-            $table->date('project_deadline');
-            $table->boolean('project_status')->default('active');
+            $table->string('project_deadline');
+            $table->string('project_status')->default('active');
             $table->timestamps();
         });
     }

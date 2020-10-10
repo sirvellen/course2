@@ -13,7 +13,10 @@ class Desk extends Model
      * @var array
      */
     protected $fillable = [
-        'first_name','surname','phone', 'api_token', 'password',
+        'project_creator',
+        'project_name',
+        'project_description',
+        'project_deadline',
     ];
 
     /**
@@ -22,7 +25,7 @@ class Desk extends Model
      * @var array
      */
     protected $hidden = [
-        'password', 'api_token', 'role',
+
     ];
 
     /**
