@@ -15,8 +15,7 @@ Route::get('/test', function () {
 //Route::middleware('auth:api')->post('/users/logout', 'UserController@logout');]
 
 
-
-Route::prefix('/users')->group(function (){
+Route::prefix('/users')->group(function () {
     Route::get('/', 'UserController@index');
     Route::post('/', 'UserController@show');
     Route::post('/register', 'UserController@store');
@@ -25,21 +24,29 @@ Route::prefix('/users')->group(function (){
     Route::get('/logout/{id}', 'UserController@logout');
 });
 
-Route::prefix('/{desk_id}')->group(function () {
-    Route::prefix('/list')->group(function () {
-        Route::get('/', 'TaskListController@index');
-        Route::post('/', 'TaskListController@store');
-        Route::prefix('/{list_id}')->group(function () {
-            Route::get('/', 'TaskListController@show');
-            Route::patch('/', 'TaskListController@update');
-            Route::delete('/', 'TaskListController@destroy');
-            Route::prefix('/task')->group(function () {
-                Route::get('/', 'TaskController@show');
-                Route::post('/', 'TaskController@store');
-                Route::patch('/{task_id}', 'TaskController@update');
-                Route::patch('/{task_id}/done', 'TaskController@done');
-                Route::patch('/{task_id}/undone', 'TaskController@undone');
-                Route::delete('/{task_id}', 'TaskController@destroy');
+Route::prefix('/project')->group(function () {
+    Route::get('/', 'DeskController@index');
+    Route::post('/', 'DeskController@store');
+    Route::prefix('/{desk_id}')->group(function () {
+        Route::get('/', 'DeskController@show');
+        Route::patch('/', 'DeskController@update');
+        Route::delete('/', 'DeskController@destroy');
+        Route::prefix('/list')->group(function () {
+            Route::get('/', 'TaskListController@index');
+            Route::post('/', 'TaskListController@store');
+            Route::prefix('/{list_id}')->group(function () {
+                Route::get('/', 'TaskListController@show');
+                Route::patch('/', 'TaskListController@update');
+                Route::delete('/', 'TaskListController@destroy');
+                Route::prefix('/task')->group(function () {
+                    Route::get('/', 'TaskController@index');
+                    Route::post('/', 'TaskController@store');
+                    Route::prefix('/{task_id}')->group(function () {
+                        Route::get('/', 'TaskController@show');
+                        Route::patch('/', 'TaskController@update');
+                        Route::delete('/', 'TaskController@destroy');
+                    });
+                });
             });
         });
     });

@@ -33,7 +33,7 @@ class DeskController extends Controller
 
         try {
             $desk = Desk::create([
-                'desk_name' => $request->desk_name,
+                'desk_name' => $request->project_name,
             ]);
         } catch (\Exception $exception) {
             return response()->json($exception->getMessage())->setStatusCode(400, 'Bad request');
@@ -59,7 +59,7 @@ class DeskController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response|object
      */
-    public function update($desk_id,Request $request)
+    public function update($desk_id, Request $request)
     {
         $validated = Validator::make($request->all(), $request->rules());
 
@@ -68,7 +68,7 @@ class DeskController extends Controller
         }
         try {
             $desk = Desk::query()->where('id', $desk_id)
-                ->update(['desk_name' => $request->list_name]);
+                ->update(['desk_name' => $request->project_name]);
         } catch (\Exception $exception) {
             return response()->json($exception->getMessage())->setStatusCode(400, 'Bad request');
         }
@@ -78,7 +78,7 @@ class DeskController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response|object
      */
     public function destroy($id)
