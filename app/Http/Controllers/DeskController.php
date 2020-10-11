@@ -40,13 +40,10 @@ class DeskController extends Controller
         if ($validated->fails()) {
             return response($validated->messages(), 400);
         }
-//        $token = $request->bearerToken();
-//        $user = DB::table('users')->where('api_token', $token)->select('id');
-//        $user_id = $user->find('id');
-//        die($user_id);
+        $user_id = $request->User::user_id();
         try {
             $desk = Desk::create([
-                'project_creator' => 1,
+                'project_creator' => $user_id,
                 'project_name' => $request->project_name,
                 'project_description' => $request->project_description,
                 'project_deadline' => $request->project_deadline,
@@ -84,7 +81,11 @@ class DeskController extends Controller
         }
         try {
             $desk = Desk::query()->where('id', $desk_id)
-                ->update(['desk_name' => $request->project_name]);
+                ->update([
+                    'project_name' => $request->project_name,
+                    'project_description' => $request->project_description,
+                    'project_deadline' => $request->project_deadline,
+                ]);
         } catch (\Exception $exception) {
             return response()->json($exception->getMessage())->setStatusCode(400, 'Bad request');
         }
@@ -105,18 +106,5 @@ class DeskController extends Controller
             return response()->json($exception->getMessage())->setStatusCode(400, 'Bad request');
         }
         return response()->json($desk)->setStatusCode(200, 'Successful deleted');
-    }
-
-    /**
-     * Get the bearer token from the request headers.
-     *
-     * @return string|null
-     */
-    public function bearerToken()
-    {
-        $header = $this->header('Authorization', '');
-        if (Str::startsWith($header, 'Bearer ')) {
-            return Str::substr($header, 7);
-        }
     }
 }
