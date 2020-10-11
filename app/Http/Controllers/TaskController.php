@@ -31,7 +31,6 @@ class TaskController extends Controller
     public function store($desk_id, $list_id, Request $request)
     {
         $validated = Validator::make($request->all(), [
-            'user_id' => 'required|numeric',
             'assignee_id' => 'required|numeric',
             'task_name' => 'required|string|max:25',
             'task_description' => 'nullable|string|max:250',

@@ -41,6 +41,7 @@ class TaskListController extends Controller
                 'desk_id' => $desk_id,
                 'list_name' => $request->list_name,
             ]);
+            dd($tasklist);
         } catch (\Exception $exception) {
             return response()->json($exception->getMessage())->setStatusCode(400, 'Bad request');
         }
