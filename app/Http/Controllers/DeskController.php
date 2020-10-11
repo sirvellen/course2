@@ -40,10 +40,11 @@ class DeskController extends Controller
         if ($validated->fails()) {
             return response($validated->messages(), 400);
         }
-        $user_id = $request->User::user_id();
+        $token = $request->bearerToken();
+        $user = User::query()->select('id')->where('api_token', $token)->first();
         try {
             $desk = Desk::create([
-                'project_creator' => $user_id,
+                'project_creator' => $user->id,
                 'project_name' => $request->project_name,
                 'project_description' => $request->project_description,
                 'project_deadline' => $request->project_deadline,
@@ -106,5 +107,18 @@ class DeskController extends Controller
             return response()->json($exception->getMessage())->setStatusCode(400, 'Bad request');
         }
         return response()->json($desk)->setStatusCode(200, 'Successful deleted');
+    }
+
+    /**
+     * Get the bearer token from the request headers.
+     *
+     * @return string|null
+     */
+    public function bearerToken()
+    {
+        $header = $this->header('Authorization', '');
+        if (Str::startsWith($header, 'Bearer ')) {
+            return Str::substr($header, 7);
+        }
     }
 }

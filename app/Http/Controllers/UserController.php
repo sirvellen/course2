@@ -115,6 +115,7 @@ class UserController extends Controller
             and
             Hash::check($request->password, $user->password)
         ) {
+
             $user->api_token = Str::random(40);
             $user->save();
 
