@@ -8,7 +8,7 @@ class TaskList extends Model
 {
 
     protected $fillable = [
-        'desk_id',
+        'project_id',
         'list_name',
     ];
 

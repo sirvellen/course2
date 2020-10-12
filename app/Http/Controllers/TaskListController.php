@@ -27,7 +27,7 @@ class TaskListController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response|object
      */
-    public function store($desk_id, TaskListRequest $request)
+    public function store($project_id, TaskListRequest $request)
     {
 
         $validated = Validator::make($request->all(), $request->rules());
@@ -38,7 +38,7 @@ class TaskListController extends Controller
 
         try {
             $tasklist = TaskList::create([
-                'desk_id' => $desk_id,
+                'project_id' => $project_id,
                 'list_name' => $request->list_name,
             ]);
             dd($tasklist);
@@ -54,10 +54,10 @@ class TaskListController extends Controller
      * @param int $id
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response|object
      */
-    public function show($desk_id, $list_id, Request $request)
+    public function show($project_id, $list_id, Request $request)
     {
         // код для будущего расширения поиска
-//      todo:  $data = TaskList::select('id', 'desk_id', 'list_name')->where('id', $request->list_id)->get();
+//      todo:  $data = TaskList::select('id', 'project_id', 'list_name')->where('id', $request->list_id)->get();
         try {
             $data = TaskList::select()->where('id', $list_id)->get();
         } catch (\Exception $exception) {
@@ -74,7 +74,7 @@ class TaskListController extends Controller
      * @param int $id
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response|object
      */
-    public function update($desk_id, $list_id, TaskListRequest $request)
+    public function update($project_id, $list_id, TaskListRequest $request)
     {
         $validated = Validator::make($request->all(), $request->rules());
 
@@ -96,7 +96,7 @@ class TaskListController extends Controller
      * @param int $id
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response|object
      */
-    public function destroy($desk_id, $list_id, Request $request)
+    public function destroy($project_id, $list_id, Request $request)
     {
         try {
             $taskList = TaskList::query()->where('id', $list_id)->delete();

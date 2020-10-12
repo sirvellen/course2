@@ -25,12 +25,22 @@ Route::prefix('/users')->group(function () {
 });
 
 Route::prefix('/project')->group(function () {
-    Route::get('/', 'DeskController@index');
-    Route::post('/', 'DeskController@store');
-    Route::prefix('/{desk_id}')->group(function () {
-        Route::get('/', 'DeskController@show');
-        Route::patch('/', 'DeskController@update');
-        Route::delete('/', 'DeskController@destroy');
+    Route::get('/', 'ProjectController@index');
+    Route::post('/', 'ProjectController@store');
+    Route::prefix('/{project_id}')->group(function () {
+        Route::get('/', 'ProjectController@show');
+        Route::patch('/', 'ProjectController@update');
+        Route::delete('/', 'ProjectController@destroy');
+
+        Route::prefix('/task')->group(function () {
+            Route::get('/', 'TaskController@index');
+            Route::post('/', 'TaskController@store');
+            Route::prefix('/{task_id}')->group(function () {
+                Route::get('/', 'TaskController@show');
+                Route::patch('/', 'TaskController@update');
+                Route::delete('/', 'TaskController@destroy');
+            });
+
         Route::prefix('/list')->group(function () {
             Route::get('/', 'TaskListController@index');
             Route::post('/', 'TaskListController@store');
@@ -38,14 +48,6 @@ Route::prefix('/project')->group(function () {
                 Route::get('/', 'TaskListController@show');
                 Route::patch('/', 'TaskListController@update');
                 Route::delete('/', 'TaskListController@destroy');
-                Route::prefix('/task')->group(function () {
-                    Route::get('/', 'TaskController@index');
-                    Route::post('/', 'TaskController@store');
-                    Route::prefix('/{task_id}')->group(function () {
-                        Route::get('/', 'TaskController@show');
-                        Route::patch('/', 'TaskController@update');
-                        Route::delete('/', 'TaskController@destroy');
-                    });
                 });
             });
         });

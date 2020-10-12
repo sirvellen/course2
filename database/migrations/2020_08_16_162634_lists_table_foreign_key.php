@@ -14,7 +14,7 @@ class ListsTableForeignKey extends Migration
     public function up()
     {
         Schema::table('task_lists', function (Blueprint $table) {
-            $table->foreign('desk_id')->references('id')->on('desks')
+            $table->foreign('project_id')->references('id')->on('projects')
                 ->onDelete('cascade')->onUpdate('cascade');
         });
     }
@@ -27,7 +27,7 @@ class ListsTableForeignKey extends Migration
     public function down()
     {
         Schema::table('task_lists', function (Blueprint $table) {
-            $table->dropForeign(['desk_id']);
+            $table->dropForeign(['project_id']);
         });
     }
 }

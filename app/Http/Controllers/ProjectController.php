@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Desk;
+use App\Project;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -10,16 +10,16 @@ use Illuminate\Support\Facades\Validator;
 use Concerns\InteractsWithInput;
 use Illuminate\Support\Str;
 
-class DeskController extends Controller
+class ProjectController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return Desk[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Http\Response
+     * @return Project[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Http\Response
      */
     public function index()
     {
-        return Desk::all();
+        return Project::all();
     }
 
     /**
@@ -43,7 +43,7 @@ class DeskController extends Controller
         $token = $request->bearerToken();
         $user = User::query()->select('id')->where('api_token', $token)->first();
         try {
-            $desk = Desk::create([
+            $project = Project::create([
                 'project_creator' => $user->id,
                 'project_name' => $request->project_name,
                 'project_description' => $request->project_description,
@@ -52,7 +52,7 @@ class DeskController extends Controller
         } catch (\Exception $exception) {
             return response()->json($exception->getMessage())->setStatusCode(400, 'Bad request');
         }
-        return response()->json($desk)->setStatusCode(201, 'Successful Created');
+        return response()->json($project)->setStatusCode(201, 'Successful Created');
     }
 
     /**
@@ -63,7 +63,7 @@ class DeskController extends Controller
      */
     public function show($id)
     {
-        return Desk::all()->where('id', $id);
+        return Project::all()->where('id', $id);
     }
 
     /**
@@ -73,7 +73,7 @@ class DeskController extends Controller
      * @param int $id
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response|object
      */
-    public function update($desk_id, Request $request)
+    public function update($project_id, Request $request)
     {
         $validated = Validator::make($request->all(), $request->rules());
 
@@ -81,7 +81,7 @@ class DeskController extends Controller
             return response($validated->messages(), 400);
         }
         try {
-            $desk = Desk::query()->where('id', $desk_id)
+            $project = Project::query()->where('id', $project_id)
                 ->update([
                     'project_name' => $request->project_name,
                     'project_description' => $request->project_description,
@@ -90,7 +90,7 @@ class DeskController extends Controller
         } catch (\Exception $exception) {
             return response()->json($exception->getMessage())->setStatusCode(400, 'Bad request');
         }
-        return response()->json($desk)->setStatusCode(202, 'Successful Edited');
+        return response()->json($project)->setStatusCode(202, 'Successful Edited');
     }
 
     /**
@@ -102,11 +102,11 @@ class DeskController extends Controller
     public function destroy($id)
     {
         try {
-            $desk = Desk::query()->where('id', $id)->delete();
+            $project = Project::query()->where('id', $id)->delete();
         } catch (\Exception $exception) {
             return response()->json($exception->getMessage())->setStatusCode(400, 'Bad request');
         }
-        return response()->json($desk)->setStatusCode(200, 'Successful deleted');
+        return response()->json($project)->setStatusCode(200, 'Successful deleted');
     }
 
     /**

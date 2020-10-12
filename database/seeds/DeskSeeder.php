@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class DeskSeeder extends Seeder
+class projectSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -19,7 +19,7 @@ class DeskSeeder extends Seeder
             'role' => 'manager',
         ]);
 
-        DB::table('desks')->insert([
+        DB::table('projects')->insert([
             'project_creator' => 1,
             'project_name' => 'project',
             'project_description' => 'test project',
