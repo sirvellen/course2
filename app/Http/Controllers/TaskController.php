@@ -28,7 +28,7 @@ class TaskController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response|object
      */
-    public function store($project_id, $list_id, Request $request)
+    public function store($project_id, Request $request)
     {
         $validated = Validator::make($request->all(), [
             'assignee_id' => 'required|numeric',
