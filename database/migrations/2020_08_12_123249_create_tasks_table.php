@@ -27,8 +27,6 @@ class CreateTasksTable extends Migration
             $table->double('done_time')->nullable();
             $table->timestamps();
 
-            $table->foreign('list_id')->references('task_list_id')->on('task_lists')
-                ->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('creator_id')->references('id')->on('users')
                 ->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('assignee_id')->references('id')->on('users')
