@@ -42,6 +42,11 @@ class ProjectController extends Controller
         }
         $token = $request->bearerToken();
         $user = User::query()->select('id')->where('api_token', $token)->first();
+        if ($user == NULL) {
+            return response()->json([
+                'message' => 'Пользователь не авторизован'
+            ])->setStatusCode(403, 'Action Unauthorized');
+        }
         try {
             $project = Project::create([
                 'project_creator' => $user->id,
