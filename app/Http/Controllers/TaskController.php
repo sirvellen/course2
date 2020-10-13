@@ -62,14 +62,7 @@ class TaskController extends Controller
         } catch (\Exception $exception) {
             return response()->json($exception->getMessage())->setStatusCode(400, 'Bad request');
         }
-        return response()->json([
-            'id' => 1,
-            'list_id' => $task->list_id,
-            'task_name' => $task->task_name,
-            'task_description' => $task->task_description,
-            'urgency' => $task->urgency,
-            'is_private' => $task->is_private,
-        ])->setStatusCode(201, 'Successful Created');
+        return response()->json($task)->setStatusCode(201, 'Successful Created');
     }
 
     /**
