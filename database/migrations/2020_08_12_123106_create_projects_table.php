@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateprojectsTable extends Migration
+class CreateProjectsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -20,7 +20,7 @@ class CreateprojectsTable extends Migration
             $table->string('project_name');
             $table->string('project_description');
             $table->string('project_deadline');
-            $table->double('project_status')->default(1);
+            $table->unsignedDouble('project_status')->default(1);
             $table->timestamps();
         });
     }
