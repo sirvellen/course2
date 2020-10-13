@@ -46,7 +46,6 @@ class TaskController extends Controller
             $task = Task::create([
                 'creator_id' => $request->user_id,
                 'assignee_id' => $request->assignee_id,
-                'list_id' => $list_id,
                 'task_name' => $request->task_name,
                 'task_description' => $request->task_description,
                 'urgency' => $request->urgency,
