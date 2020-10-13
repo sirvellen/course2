@@ -51,10 +51,10 @@ class TaskController extends Controller
         }
         try {
             $task = Task::create([
-                'creator_id' => $user->id,
-                'assignee_id' => $request->assignee_id,
                 'task_name' => $request->task_name,
                 'task_description' => $request->task_description,
+                'creator_id' => $user->id,
+                'assignee_id' => $request->assignee_id,
                 'urgency' => $request->urgency,
                 'is_private' => $request->is_private,
             ]);

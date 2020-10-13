@@ -20,7 +20,7 @@ class CreateprojectsTable extends Migration
             $table->string('project_name');
             $table->string('project_description');
             $table->string('project_deadline');
-            $table->double('project_status')->default('1');
+            $table->double('project_status')->default(1);
             $table->timestamps();
         });
     }
