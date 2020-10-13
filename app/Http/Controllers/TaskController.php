@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Exceptions\Exception;
 use App\Http\Requests\TaskRequest;
 use App\Task;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -41,10 +42,16 @@ class TaskController extends Controller
         if ($validated->fails()) {
             return response($validated->messages(), 400);
         }
-
+        $token = $request->bearerToken();
+        $user = User::query()->select('id')->where('api_token', $token)->first();
+        if ($user == NULL) {
+            return response()->json([
+                'message' => 'Пользователь не авторизован'
+            ])->setStatusCode(403, 'Action Unauthorized');
+        }
         try {
             $task = Task::create([
-                'creator_id' => $request->user_id,
+                'creator_id' => $user->id,
                 'assignee_id' => $request->assignee_id,
                 'task_name' => $request->task_name,
                 'task_description' => $request->task_description,
