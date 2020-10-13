@@ -57,6 +57,7 @@ class TaskController extends Controller
                 'assignee_id' => $request->assignee_id,
                 'urgency' => $request->urgency,
                 'is_private' => $request->is_private,
+                'deadline' => $request->deadline,
             ]);
         } catch (\Exception $exception) {
             return response()->json($exception->getMessage())->setStatusCode(400, 'Bad request');
