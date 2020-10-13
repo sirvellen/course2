@@ -34,7 +34,7 @@ class ProjectController extends Controller
             [
                 'project_name' => ['required', 'string'],
                 'project_description' => ['required', 'string'],
-                'project_deadline' => ['required', 'string'],
+//                'project_deadline' => ['required', 'string'],
             ]);
 
         if ($validated->fails()) {
@@ -47,7 +47,7 @@ class ProjectController extends Controller
                 'project_creator' => $user->id,
                 'project_name' => $request->project_name,
                 'project_description' => $request->project_description,
-                'project_deadline' => $request->project_deadline,
+                'project_deadline' => '2021-20-01',
             ]);
         } catch (\Exception $exception) {
             return response()->json($exception->getMessage())->setStatusCode(400, 'Bad request');
@@ -59,7 +59,7 @@ class ProjectController extends Controller
      * Display the specified resource.
      *
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return Project[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Http\Response
      */
     public function show($id)
     {
