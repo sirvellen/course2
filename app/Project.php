@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Project extends Model
 {
-    public $timestamps = false;
+    public $timestamps = true;
     /**
      * The attributes that are mass assignable.
      *
