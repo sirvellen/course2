@@ -23,6 +23,7 @@ Route::prefix('/users')->group(function () {
     Route::post('/login', 'UserController@login');
     Route::get('/logout/{id}', 'UserController@logout');
 });
+Route::post('/user_tasks', 'TaskController@get_user_tasks');
 
 Route::prefix('/project')->group(function () {
     Route::get('/', 'ProjectController@index');
@@ -31,7 +32,6 @@ Route::prefix('/project')->group(function () {
         Route::get('/', 'ProjectController@show');
         Route::patch('/', 'ProjectController@update');
         Route::delete('/', 'ProjectController@destroy');
-
         Route::prefix('/task')->group(function () {
             Route::get('/', 'TaskController@index');
             Route::post('/', 'TaskController@store');

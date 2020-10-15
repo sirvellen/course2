@@ -52,7 +52,7 @@ class UserController extends Controller
         try {
             User::create([
                 'username' => $request->username,
-                'email' => $request->email,
+                'email' => strtolower($request->email),
                 'password' => Hash::make($request->password),
             ]);
         } catch (Exception $exception) {
@@ -84,7 +84,7 @@ class UserController extends Controller
             $user = User::query()->where('email', $request->email)
                 ->update([
                     'username' => $request->username,
-                    'email' => $request->email,
+                    'email' => strtolower($request->email),
                     'password' => Hash::make($request->password),
                     'role' => $request->role,
                 ]);
@@ -111,7 +111,7 @@ class UserController extends Controller
         }
 
         /** @var User $user */
-        if ($user = User::query()->where(['email' => $request->email,])->first()
+        if ($user = User::query()->where(['email' => strtolower($request->email),])->first()
             and
             Hash::check($request->password, $user->password)
         ) {
