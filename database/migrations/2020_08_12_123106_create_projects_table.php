@@ -18,8 +18,8 @@ class CreateProjectsTable extends Migration
 //            $table->unsignedBigInteger('team_id');
             $table->unsignedBigInteger('project_creator');
             $table->string('project_name');
-            $table->string('project_description');
-            $table->string('project_deadline');
+            $table->string('project_description')->nullable();
+            $table->string('project_deadline')->nullable();
             $table->unsignedDouble('project_status')->default(1);
             $table->timestamps();
         });
