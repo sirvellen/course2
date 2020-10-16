@@ -35,6 +35,7 @@ class SubTaskController extends Controller
         try {
             $task = SubTask::create([
                 'subtask_name' => $request->subtask_name,
+                'subtask_id' => $task_id,
             ]);
         } catch (\Exception $exception) {
             return response()->json($exception->getMessage())->setStatusCode(400, 'Bad request');

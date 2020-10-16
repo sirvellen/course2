@@ -15,7 +15,7 @@ class CreateSubtasksTable extends Migration
     {
         Schema::create('subtasks', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('subtask_id');
+            $table->unsignedBigInteger('task_id');
             $table->text('subtask_name');
             $table->boolean('status')->default(0);
             $table->timestamps();
