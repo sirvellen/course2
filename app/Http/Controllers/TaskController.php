@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exceptions\Exception;
 use App\Http\Requests\TaskRequest;
+use App\SubTask;
 use App\Task;
 use App\User;
 use Illuminate\Http\Request;
@@ -54,6 +55,7 @@ class TaskController extends Controller
                 'task_name' => $request->task_name,
                 'task_description' => $request->task_description,
                 'creator_id' => $user->id,
+                'project_id' => $project_id,
                 'assignee_id' => $request->assignee_id,
                 'urgency' => $request->urgency,
                 'is_private' => $request->is_private,
@@ -71,10 +73,10 @@ class TaskController extends Controller
      * @param int $id
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response|object
      */
-    public function show($project_id, $list_id, $task_id, Request $request)
+    public function show($project_id, $task_id, Request $request)
     {
         try {
-            $data = Task::select()->where('id', $task_id)->get();
+            $data = array_merge(Task::select()->where('id', $task_id)->first(), SubTask::select()->where('task_id', $task_id)->first());
         } catch (\Exception $exception) {
             return response()->json($exception->getMessage())->setStatusCode(400, 'Bad request');
         }
@@ -141,5 +143,14 @@ class TaskController extends Controller
             return response()->json($exception->getMessage())->setStatusCode(400, 'Bad request');
         }
         return response()->json($task)->setStatusCode(202, 'Successful marked');
+    }
+
+    public function get_user_tasks($user_id) {
+        try {
+            $user_tasks = Task::query()->where('assignee_id', $user_id)->get();
+        } catch (\Exception $exception) {
+            return response()->json($exception->getMessage())->setStatusCode(400, 'Bad request');
+        }
+        return response()->json($user_tasks)->setStatusCode(200, 'Ok');
     }
 }
