@@ -13,6 +13,7 @@ class Task extends Model
         'assignee_id',
         'urgency',
         'is_private',
-        'deadline'
+        'deadline',
+        'project_id',
     ];
 }
