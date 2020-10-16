@@ -20,11 +20,26 @@ class SubTaskController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response|object
      */
-    public function store(Request $request)
+    public function store($project_id, $task_id, Request $request)
     {
-        //
+        $validated = Validator::make($request->all(), [
+            'subtask_name' => ['required']
+        ]);
+
+        if ($validated->fails()) {
+            return response($validated->messages(), 400);
+        }
+
+        try {
+            $task = SubTask::create([
+                'subtask_name' => $request->subtask_name,
+            ]);
+        } catch (\Exception $exception) {
+            return response()->json($exception->getMessage())->setStatusCode(400, 'Bad request');
+        }
+        return response()->json($task)->setStatusCode(201, 'Successful Created');
     }
 
     /**

@@ -39,6 +39,7 @@ Route::prefix('/project')->group(function () {
                 Route::get('/', 'TaskController@show');
                 Route::patch('/', 'TaskController@update');
                 Route::delete('/', 'TaskController@destroy');
+                Route::post('/', 'SubTaskController@store');
             });
 
         Route::prefix('/list')->group(function () {
