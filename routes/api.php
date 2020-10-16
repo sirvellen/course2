@@ -23,7 +23,7 @@ Route::prefix('/users')->group(function () {
     Route::post('/login', 'UserController@login');
     Route::get('/logout/{id}', 'UserController@logout');
 });
-Route::post('/user_tasks/{user_id}', 'TaskController@get_user_tasks');
+Route::get('/user_tasks/{user_id}', 'TaskController@get_user_tasks');
 
 Route::prefix('/project')->group(function () {
     Route::get('/', 'ProjectController@index');
