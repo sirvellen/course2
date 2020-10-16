@@ -13,7 +13,7 @@ class CreateSubtasksTable extends Migration
      */
     public function up()
     {
-        Schema::create('subtasks', function (Blueprint $table) {
+        Schema::create('sub_tasks', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('task_id');
             $table->text('subtask_name');
@@ -32,6 +32,6 @@ class CreateSubtasksTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('subtasks');
+        Schema::dropIfExists('sub_tasks');
     }
 }
