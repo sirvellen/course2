@@ -32,6 +32,13 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
+        $token = $request->bearerToken();
+        $user = User::query()->select('id')->where('api_token', $token)->first();
+        if ($user == NULL) {
+            return response()->json([
+                'message' => 'Пользователь не авторизован'
+            ])->setStatusCode(403, 'Action Unauthorized');
+        }
         $validated = Validator::make($request->all(), [
             'assignee_id' => 'required|numeric',
             'task_name' => 'required|string|max:25',
@@ -43,13 +50,7 @@ class TaskController extends Controller
         if ($validated->fails()) {
             return response($validated->messages(), 400);
         }
-        $token = $request->bearerToken();
-        $user = User::query()->select('id')->where('api_token', $token)->first();
-        if ($user == NULL) {
-            return response()->json([
-                'message' => 'Пользователь не авторизован'
-            ])->setStatusCode(403, 'Action Unauthorized');
-        }
+
         try {
             $task = Task::create([
                 'task_name' => $request->task_name,
@@ -169,10 +170,21 @@ class TaskController extends Controller
 
     public function get_user_tasks($user_id) {
         try {
-            $user_tasks = Task::query()->where('assignee_id', $user_id)->get();
+            $data = Task::query()->where('assignee_id', $user_id)->get();
+            $creator = User::query()->select('username')->where('id', $data->creator_id)->first()->toArray();
+            $executer = User::query()->select('username')->where('id', $data->assignee_id)->first()->toArray();
         } catch (\Exception $exception) {
             return response()->json($exception->getMessage())->setStatusCode(400, 'Bad request');
         }
-        return response()->json($user_tasks)->setStatusCode(200, 'Ok');
+        return response()->json([
+            'status' => $data->status,
+            'title' => $data->task_name,
+            'executer' => $executer,
+            'deadline' => $data->deadline,
+            'difficulty' => $data->urgency,
+            'time' => $data->estimated_time,
+            'timeF' => $data->done_time,
+            'author' => $creator,
+            'description' => $data->task_description],)->setStatusCode(200, 'Ok');
     }
 }
