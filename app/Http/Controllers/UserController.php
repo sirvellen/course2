@@ -26,8 +26,13 @@ class UserController extends Controller
 
     public function show(Request $request)
     {
-        $user_id = $request->id;
-        $user = User::select()->where('id', $request->id)->get();
+        try {
+            $token = $request->bearerToken();
+            $user_id = User::query()->select('id')->where('api_token', $token)->first();
+            $user = User::select()->where('id', $user_id)->get();
+        } catch(\Exception $exception) {
+            return response()->json($exception)->setStatusCode('200', 'Ok');
+        }
         return response()->json($user)->setStatusCode('200', 'Ok');
     }
 

@@ -24,7 +24,15 @@ Route::prefix('/users')->group(function () {
     Route::get('/logout/{id}', 'UserController@logout');
 });
 Route::get('/user_tasks/{user_id}', 'TaskController@get_user_tasks');
-
+Route::prefix('/task')->group(function () {
+    Route::get('/', 'TaskController@index');
+    Route::post('/', 'TaskController@store');
+    Route::prefix('/{task_id}')->group(function () {
+        Route::get('/', 'TaskController@show');
+        Route::patch('/', 'TaskController@update');
+        Route::delete('/', 'TaskController@destroy');
+        Route::post('/', 'SubTaskController@store');
+    });
 Route::prefix('/project')->group(function () {
     Route::get('/', 'ProjectController@index');
     Route::post('/', 'ProjectController@store');
@@ -32,16 +40,6 @@ Route::prefix('/project')->group(function () {
         Route::get('/', 'ProjectController@show');
         Route::patch('/', 'ProjectController@update');
         Route::delete('/', 'ProjectController@destroy');
-        Route::prefix('/task')->group(function () {
-            Route::get('/', 'TaskController@index');
-            Route::post('/', 'TaskController@store');
-            Route::prefix('/{task_id}')->group(function () {
-                Route::get('/', 'TaskController@show');
-                Route::patch('/', 'TaskController@update');
-                Route::delete('/', 'TaskController@destroy');
-                Route::post('/', 'SubTaskController@store');
-            });
-
         Route::prefix('/list')->group(function () {
             Route::get('/', 'TaskListController@index');
             Route::post('/', 'TaskListController@store');

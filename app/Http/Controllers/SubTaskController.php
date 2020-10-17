@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Subtask;
+use App\SubTask;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -35,7 +35,7 @@ class SubTaskController extends Controller
         }
 
         try {
-            $task = Subtask::create([
+            $task = SubTask::create([
                 'subtask_name' => $request->subtask_name,
                 'subtask_id' => $task_id,
             ]);

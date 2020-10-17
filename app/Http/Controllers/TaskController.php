@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exceptions\Exception;
 use App\Http\Requests\TaskRequest;
-use App\Subtask;
+use App\SubTask;
 use App\Task;
 use App\User;
 use Illuminate\Http\Request;
@@ -30,7 +30,7 @@ class TaskController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response|object
      */
-    public function store($project_id, Request $request)
+    public function store(Request $request)
     {
         $validated = Validator::make($request->all(), [
             'assignee_id' => 'required|numeric',
@@ -55,19 +55,29 @@ class TaskController extends Controller
                 'task_name' => $request->task_name,
                 'task_description' => $request->task_description,
                 'creator_id' => $user->id,
-                'project_id' => $project_id,
+                'project_id' => $request->project_id,
                 'assignee_id' => $request->assignee_id,
                 'urgency' => $request->urgency,
                 'is_private' => $request->is_private,
                 'deadline' => $request->deadline,
             ]);
-            $task = Task::all()->where('id', $task->id)->first()->toArray();
+            $data = Task::all()->where('id', $task->id)->first()->toArray();
             $creator = User::query()->select('username')->where('id', $user->id)->first()->toArray();
-            $data = array_merge($task, $creator);
+            $executer = User::query()->select('username')->where('id', $task->assignee_id)->first()->toArray();
         } catch (\Exception $exception) {
             return response()->json($exception->getMessage())->setStatusCode(400, 'Bad request');
         }
-        return response()->json($data)->setStatusCode(201, 'Successful Created');
+        return response()->json([
+            'status' => $data->status,
+            'title' => $data->task_name,
+            'executer' => $executer,
+            'deadline' => $data->deadline,
+            'difficulty' => $data->urgency,
+            'time' => $data->estimated_time,
+            'timeF' => $data->done_time,
+            'author' => $creator,
+            'description' => $data->task_description,
+        ])->setStatusCode(201, 'Successful Created');
     }
 
     /**
@@ -76,10 +86,10 @@ class TaskController extends Controller
      * @param int $id
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response|object
      */
-    public function show($project_id, $task_id, Request $request)
+    public function show($task_id, Request $request)
     {
         try {
-            $data = array_merge(Task::select()->where('id', $task_id)->first()->toArray(), Subtask::select()->where('subtask_id', $task_id)->first());
+            $data = array_merge(Task::select()->where('id', $task_id)->first(), SubTask::select()->where('task_id', $task_id)->first());
         } catch (\Exception $exception) {
             return response()->json($exception->getMessage())->setStatusCode(400, 'Bad request');
         }
@@ -93,7 +103,7 @@ class TaskController extends Controller
      * @param int $id
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response|object
      */
-    public function update($project_id, $list_id, $task_id, Request $request)
+    public function update($task_id, Request $request)
     {
         $validated = Validator::make($request->all(), [
             'assignee_id' => 'nullable|numeric',
@@ -127,7 +137,7 @@ class TaskController extends Controller
      * @param int $id
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response|object
      */
-    public function destroy($project_id, $list_id, $task_id, Request $request)
+    public function destroy($task_id, Request $request)
     {
         try {
             $task = Task::query()->where('id', $task_id)->delete();
@@ -137,7 +147,7 @@ class TaskController extends Controller
         return response()->json($task)->setStatusCode(202, 'Successful deleted');
     }
 
-    public function done($project_id, $list_id, $task_id, Request $request)
+    public function done($task_id, Request $request)
     {
         try {
             $task = Task::query()->where('id', $task_id)->update(['task_done' => true]);
@@ -147,7 +157,7 @@ class TaskController extends Controller
         return response()->json($task)->setStatusCode(202, 'Successful marked');
     }
 
-    public function undone($project_id, $list_id, $task_id, Request $request)
+    public function undone($task_id, Request $request)
     {
         try {
             $task = Task::query()->where('id', $task_id)->update(['task_done' => false]);

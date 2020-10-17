@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Project;
-use App\Subtask;
+use App\SubTask;
 use App\Task;
 use App\User;
 use Illuminate\Http\Request;
