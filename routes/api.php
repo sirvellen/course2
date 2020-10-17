@@ -33,6 +33,7 @@ Route::prefix('/task')->group(function () {
         Route::delete('/', 'TaskController@destroy');
         Route::post('/', 'SubTaskController@store');
     });
+});
 Route::prefix('/project')->group(function () {
     Route::get('/', 'ProjectController@index');
     Route::post('/', 'ProjectController@store');
@@ -47,11 +48,11 @@ Route::prefix('/project')->group(function () {
                 Route::get('/', 'TaskListController@show');
                 Route::patch('/', 'TaskListController@update');
                 Route::delete('/', 'TaskListController@destroy');
-                });
             });
         });
     });
 });
+
 
 // Exception routes
 Route::get('exception/index', 'ExceptionController@index');

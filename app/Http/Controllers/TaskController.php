@@ -62,21 +62,22 @@ class TaskController extends Controller
                 'is_private' => $request->is_private,
                 'deadline' => $request->deadline,
             ]);
-            $data = Task::all()->where('id', $task->id)->first()->toArray();
-            $creator = User::query()->select('username')->where('id', $user->id)->first()->toArray();
-            $executer = User::query()->select('username')->where('id', $task->assignee_id)->first()->toArray();
+            $data = Task::all()->where('id', $task->id)->first();
+            $creator = User::query()->select('username')->where('id', $user->id)->first();
+            $executer = User::query()->select('username')->where('id', $task->assignee_id)->first();
         } catch (\Exception $exception) {
             return response()->json($exception->getMessage())->setStatusCode(400, 'Bad request');
         }
         return response()->json([
+            'id' => $data->id,
             'status' => $data->status,
             'title' => $data->task_name,
-            'executer' => $executer,
+            'executer' => $executer->username,
             'deadline' => $data->deadline,
             'difficulty' => $data->urgency,
             'time' => $data->estimated_time,
             'timeF' => $data->done_time,
-            'author' => $creator,
+            'author' => $creator->username,
             'description' => $data->task_description,
         ])->setStatusCode(201, 'Successful Created');
     }
@@ -168,9 +169,11 @@ class TaskController extends Controller
         return response()->json($task)->setStatusCode(202, 'Successful marked');
     }
 
-    public function get_user_tasks($user_id) {
+    public function get_user_tasks($user_id)
+    {
         try {
-            $data = Task::query()->where('assignee_id', $user_id)->get();
+            $data = Task::query()->select()->where('assignee_id', $user_id)->get()->toArray();
+            dd($data);
         } catch (\Exception $exception) {
             return response()->json($exception->getMessage())->setStatusCode(400, 'Bad request');
         }
@@ -181,6 +184,6 @@ class TaskController extends Controller
             'difficulty' => $data->urgency,
             'time' => $data->estimated_time,
             'timeF' => $data->done_time,
-            'description' => $data->task_description],)->setStatusCode(200, 'Ok');
+            'description' => $data->task_description])->setStatusCode(200, 'Ok');
     }
 }
