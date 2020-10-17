@@ -37,6 +37,7 @@ class ProjectController extends Controller
                 'project_name' => ['required', 'string'],
                 'project_description' => ['nullable', 'string'],
                 'project_deadline' => ['nullable', 'string'],
+                'project_status' => 'nullable|numeric|min:1|max:3',
             ]);
 
         if ($validated->fails()) {
@@ -97,6 +98,7 @@ class ProjectController extends Controller
             'project_name' => 'nullable|string',
             'project_description' => 'nullable|string',
             'project_deadline' => 'nullable|string',
+            'project_status' => 'nullable|numeric|min:1|max:3',
         ]);
 
         if ($validated->fails()) {
@@ -108,6 +110,7 @@ class ProjectController extends Controller
                     'project_name' => $request->project_name,
                     'project_description' => $request->project_description,
                     'project_deadline' => $request->project_deadline,
+                    'project_status' =>  $request->project_status,
                 ]);
             $project = Project::query()->where('id', $project_id)->first();
         } catch (\Exception $exception) {

@@ -21,7 +21,7 @@ class CreateTasksTable extends Migration
             $table->unsignedBigInteger('assignee_id');
             $table->string('deadline');
             $table->double('urgency')->default(1);
-            $table->boolean('status')->default(1);
+            $table->double('status')->default(1);
             $table->boolean("is_private")->default(false);
             $table->double('estimated_time')->nullable();
             $table->double('done_time')->nullable();
