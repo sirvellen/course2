@@ -14,7 +14,7 @@ class AddTaskRelationOnProject extends Migration
     public function up()
     {
         Schema::table('tasks', function (Blueprint $table) {
-            $table->unsignedBigInteger('project_id');
+            $table->unsignedBigInteger('project_id')->nullable();
 
             $table->foreign('project_id')->references('id')->on('projects')
                 ->onDelete('cascade')->onUpdate('cascade');

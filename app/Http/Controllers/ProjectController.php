@@ -55,6 +55,7 @@ class ProjectController extends Controller
                 'project_name' => $request->project_name,
                 'project_description' => $request->project_description,
                 'project_deadline' =>  $request->project_deadline,
+                'project_status' =>  $request->project_status,
             ]);
         } catch (\Exception $exception) {
             return response()->json($exception->getMessage())->setStatusCode(400, 'Bad request');
