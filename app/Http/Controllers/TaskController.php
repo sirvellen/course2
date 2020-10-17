@@ -170,21 +170,17 @@ class TaskController extends Controller
 
     public function get_user_tasks($user_id) {
         try {
-            $data = Task::query()->where('assignee_id', $user_id)->get();
-            $creator = User::query()->select('username')->where('id', $data->creator_id)->first()->toArray();
-            $executer = User::query()->select('username')->where('id', $data->assignee_id)->first()->toArray();
+            $data = Task::all()->where('assignee_id', $user_id)->get();
         } catch (\Exception $exception) {
             return response()->json($exception->getMessage())->setStatusCode(400, 'Bad request');
         }
         return response()->json([
             'status' => $data->status,
             'title' => $data->task_name,
-            'executer' => $executer,
             'deadline' => $data->deadline,
             'difficulty' => $data->urgency,
             'time' => $data->estimated_time,
             'timeF' => $data->done_time,
-            'author' => $creator,
             'description' => $data->task_description],)->setStatusCode(200, 'Ok');
     }
 }
