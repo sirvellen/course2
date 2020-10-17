@@ -170,7 +170,7 @@ class TaskController extends Controller
 
     public function get_user_tasks($user_id) {
         try {
-            $data = Task::all()->where('assignee_id', $user_id)->get();
+            $data = Task::query()->where('assignee_id', $user_id)->get();
         } catch (\Exception $exception) {
             return response()->json($exception->getMessage())->setStatusCode(400, 'Bad request');
         }
