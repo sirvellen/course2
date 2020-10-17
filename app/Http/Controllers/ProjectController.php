@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Project;
+use App\Subtask;
+use App\Task;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -64,13 +66,17 @@ class ProjectController extends Controller
      * Display the specified resource.
      *
      * @param int $id
-     * @return Project[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Http\Response
+     * @return Project[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Http\JsonResponse|\Illuminate\Http\Response|object
      */
-    public function show($id)
+    public function show($project_id, Request $request)
     {
-        return Project::all()->where('id', $id);
+        try {
+            $data = Task::all()->where('project_id', $project_id);
+        } catch (\Exception $exception) {
+            return response()->json($exception->getMessage())->setStatusCode(400, 'Bad request');
+        }
+        return response()->json($data)->setStatusCode(201, 'Successful Found');
     }
-
     /**
      * Update the specified resource in storage.
      *

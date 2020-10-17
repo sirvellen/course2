@@ -76,7 +76,7 @@ class TaskController extends Controller
     public function show($project_id, $task_id, Request $request)
     {
         try {
-            $data = array_merge(Task::select()->where('id', $project_id)->first(), Subtask::select()->where('task_id', $task_id)->first());
+            $data = array_merge(Task::select()->where('id', $task_id)->first(), Subtask::select()->where('task_id', $task_id)->first());
         } catch (\Exception $exception) {
             return response()->json($exception->getMessage())->setStatusCode(400, 'Bad request');
         }
