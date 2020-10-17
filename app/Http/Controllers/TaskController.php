@@ -79,6 +79,7 @@ class TaskController extends Controller
             'timeF' => $data->done_time,
             'author' => $creator->username,
             'description' => $data->task_description,
+            'project_id' => $data->project_id,
         ])->setStatusCode(201, 'Successful Created');
     }
 
