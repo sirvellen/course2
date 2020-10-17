@@ -86,7 +86,12 @@ class ProjectController extends Controller
      */
     public function update($project_id, Request $request)
     {
-        $validated = Validator::make($request->all(), $request->rules());
+        $validated = Validator::make($request->all(),
+        [
+            'project_name' => 'nullable',
+            'project_description' => 'nullable',
+            'project_deadline' => 'nullable',
+        ]);
 
         if ($validated->fails()) {
             return response($validated->messages(), 400);
