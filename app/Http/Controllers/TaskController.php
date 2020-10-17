@@ -93,9 +93,15 @@ class TaskController extends Controller
      * @param int $id
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response|object
      */
-    public function update($project_id, $list_id, $task_id, TaskRequest $request)
+    public function update($project_id, $list_id, $task_id, Request $request)
     {
-        $validated = Validator::make($request->all(), $request->rules());
+        $validated = Validator::make($request->all(), [
+            'assignee_id' => 'nullable|numeric',
+            'task_name' => 'nullable|string|max:25',
+            'task_description' => 'nullable|string|max:250',
+            'urgency' => 'nullable|numeric|between:1,3',
+            'is_private' => 'nullable|bool',
+        ]);
 
         if ($validated->fails()) {
             return response($validated->messages(), 400);
