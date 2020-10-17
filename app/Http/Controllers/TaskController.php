@@ -36,7 +36,7 @@ class TaskController extends Controller
             'assignee_id' => 'required|numeric',
             'task_name' => 'required|string|max:25',
             'task_description' => 'nullable|string|max:250',
-            'urgency' => 'nullable|numeric|between:1,5',
+            'urgency' => 'nullable|numeric|between:1,3',
             'is_private' => 'nullable|bool',
         ]);
 
@@ -61,10 +61,13 @@ class TaskController extends Controller
                 'is_private' => $request->is_private,
                 'deadline' => $request->deadline,
             ]);
+            $task = Task::all()->where('id', $task->id)->first()->toArray();
+            $creator = User::query()->select('username')->where('id', $user->id)->first()->toArray();
+            $data = array_merge($task, $creator);
         } catch (\Exception $exception) {
             return response()->json($exception->getMessage())->setStatusCode(400, 'Bad request');
         }
-        return response()->json($task)->setStatusCode(201, 'Successful Created');
+        return response()->json($data)->setStatusCode(201, 'Successful Created');
     }
 
     /**
@@ -76,7 +79,7 @@ class TaskController extends Controller
     public function show($project_id, $task_id, Request $request)
     {
         try {
-            $data = array_merge(Task::select()->where('id', $task_id)->first(), Subtask::select()->where('task_id', $task_id)->first());
+            $data = array_merge(Task::select()->where('id', $task_id)->first()->toArray(), Subtask::select()->where('subtask_id', $task_id)->first());
         } catch (\Exception $exception) {
             return response()->json($exception->getMessage())->setStatusCode(400, 'Bad request');
         }
@@ -102,6 +105,9 @@ class TaskController extends Controller
                 ->update([
                     'task_name' => $request->task_name,
                     'task_description' => $request->task_description,
+                    'assignee_id' => $request->assignee_id,
+                    'urgency' => $request->urgency,
+                    'deadline' => $request->deadline,
                 ]);
         } catch (\Exception $exception) {
             return response()->json($exception->getMessage())->setStatusCode(400, 'Bad request');
