@@ -35,9 +35,9 @@ class ProjectController extends Controller
         $validated = Validator::make($request->all(),
             [
                 'project_name' => ['required', 'string'],
-                'project_description' => ['nullable', 'string'],
-                'project_deadline' => ['nullable', 'string'],
-                'project_status' => 'nullable|numeric|min:1|max:3',
+                'project_description' => ['required', 'string'],
+                'project_deadline' => ['required', 'string'],
+                'project_status' => 'required|numeric|min:1|max:3',
             ]);
 
         if ($validated->fails()) {
