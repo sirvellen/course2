@@ -88,21 +88,22 @@ class ProjectController extends Controller
     {
         $validated = Validator::make($request->all(),
         [
-            'project_name' => 'nullable',
-            'project_description' => 'nullable',
-            'project_deadline' => 'nullable',
+            'project_name' => 'nullable|string',
+            'project_description' => 'nullable|string',
+            'project_deadline' => 'nullable|string',
         ]);
 
         if ($validated->fails()) {
             return response($validated->messages(), 400);
         }
         try {
-            $project = Project::query()->where('id', $project_id)
+            Project::query()->where('id', $project_id)
                 ->update([
                     'project_name' => $request->project_name,
                     'project_description' => $request->project_description,
                     'project_deadline' => $request->project_deadline,
                 ]);
+            $project = Project::query()->where('id', $project_id)->first();
         } catch (\Exception $exception) {
             return response()->json($exception->getMessage())->setStatusCode(400, 'Bad request');
         }
