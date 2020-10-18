@@ -29,7 +29,7 @@ class UserController extends Controller
         try {
             $token = $request->bearerToken();
             $user_id = User::query()->select('id')->where('api_token', $token)->first();
-            $user = User::all()->where('id', $user_id)->first();
+            $user = User::query()->where('id', $user_id)->first();
         } catch(\Exception $exception) {
             return response()->json($exception)->setStatusCode('200', 'Ok');
         }
