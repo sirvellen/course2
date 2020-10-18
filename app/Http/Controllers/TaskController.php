@@ -180,7 +180,7 @@ class TaskController extends Controller
                     'message' => 'Пользователь не авторизован'
                 ])->setStatusCode(403, 'Action Unauthorized');
             }
-            $data = Task::query()->select()->where('assignee_id' & 'is_private', $user->id & 1)->get();
+            $data = Task::query()->select()->where('assignee_id', $user->id)->get();
         } catch (\Exception $exception) {
             return response()->json($exception->getMessage())->setStatusCode(400, 'Bad request');
         }
@@ -192,6 +192,23 @@ class TaskController extends Controller
 //            'time' => $data->estimated_time,
 //            'timeF' => $data->done_time,
 //            'description' => $data->task_description])->setStatusCode(200, 'Ok');
+        return response()->json($data)->setStatusCode(200, 'Ok');
+    }
+
+    public function get_user_private_tasks(Request $request)
+    {
+        try {
+            $token = $request->bearerToken();
+            $user = User::query()->select('id')->where('api_token', $token)->first();
+            if ($user == NULL) {
+                return response()->json([
+                    'message' => 'Пользователь не авторизован'
+                ])->setStatusCode(403, 'Action Unauthorized');
+            }
+            $data = Task::query()->select()->where('assignee_id', $user->id)->where('is_private', 1)->get();
+        } catch (\Exception $exception) {
+            return response()->json($exception->getMessage())->setStatusCode(400, 'Bad request');
+        }
         return response()->json($data)->setStatusCode(200, 'Ok');
     }
 }
