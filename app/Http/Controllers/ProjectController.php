@@ -76,9 +76,7 @@ class ProjectController extends Controller
             $data = array_merge(Project::all()->where('id', $project_id)->first()->toArray(), Task::all()->where('project_id', $project_id)->toArray());
             $project_creator = User::query()->select('username')->where('id', $data->project_creator)->first()->toArray();
             $task_creator = User::query()->select('username')->where('id', $data->project_creator)->first()->toArray();
-            $data = array_merge($data, [
-
-            ]);
+            $data = array_merge($data, $tasks, $project_creator, $task_creator);
         } catch (\Exception $exception) {
             return response()->json($exception->getMessage())->setStatusCode(400, 'Bad request');
         }

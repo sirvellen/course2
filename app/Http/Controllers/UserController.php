@@ -28,10 +28,9 @@ class UserController extends Controller
     {
         try {
             $token = $request->bearerToken();
-            $user_id = User::query()->select('id')->where('api_token', $token)->first();
-            $user = User::query()->where('id', $user_id)->first();
+            $user = User::all()->where('api_token', $token)->first();
         } catch(\Exception $exception) {
-            return response()->json($exception)->setStatusCode('200', 'Ok');
+            return response()->json($exception)->setStatusCode('400', 'Bad request');
         }
         return response()->json($user)->setStatusCode('200', 'Ok');
     }

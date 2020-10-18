@@ -23,8 +23,8 @@ class CreateTasksTable extends Migration
             $table->double('urgency')->default(1);
             $table->double('status')->default(1);
             $table->boolean("is_private")->default(false);
-            $table->double('estimated_time')->nullable();
-            $table->double('done_time')->nullable();
+            $table->string('estimated_time')->nullable();
+            $table->string('done_time')->nullable();
             $table->timestamps();
 
             $table->foreign('creator_id')->references('id')->on('users')
