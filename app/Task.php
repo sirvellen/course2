@@ -15,5 +15,7 @@ class Task extends Model
         'is_private',
         'deadline',
         'project_id',
+        'estimated_time',
+        'done_time'
     ];
 }

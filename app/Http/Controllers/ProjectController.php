@@ -36,8 +36,8 @@ class ProjectController extends Controller
             [
                 'project_name' => ['required', 'string'],
                 'project_description' => ['required', 'string'],
-                'project_deadline' => ['required', 'string'],
-                'project_status' => 'required|numeric|min:1|max:3',
+                'project_deadline' => ['nullable', 'string'],
+                'project_status' => 'nullable|numeric|min:1|max:3|default:1',
             ]);
 
         if ($validated->fails()) {
@@ -73,7 +73,8 @@ class ProjectController extends Controller
     public function show($project_id, Request $request)
     {
         try {
-            $data = array_merge(Project::all()->where('id', $project_id)->first()->toArray(), Task::all()->where('project_id', $project_id)->toArray());
+            $data = Project::all()->where('id', $project_id)->first();
+            $tasks = Task::all()->where('project_id', $project_id)->toArray();
             $project_creator = User::query()->select('username')->where('id', $data->project_creator)->first()->toArray();
             $task_creator = User::query()->select('username')->where('id', $data->project_creator)->first()->toArray();
             $data = array_merge($data, $tasks, $project_creator, $task_creator);

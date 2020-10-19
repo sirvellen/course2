@@ -61,26 +61,21 @@ class TaskController extends Controller
                 'urgency' => $request->urgency,
                 'is_private' => $request->is_private,
                 'deadline' => $request->deadline,
+                'estimated_time' => $request->estimated_time,
+                'done_time' => $request->done_time,
             ]);
             $data = Task::all()->where('id', $task->id)->first();
             $creator = User::query()->select('username')->where('id', $user->id)->first();
             $executer = User::query()->select('username')->where('id', $task->assignee_id)->first();
+            $data = [
+                'task' => $data,
+                'creator' => $creator->username,
+                'executer' => $executer->username,
+            ];
         } catch (\Exception $exception) {
             return response()->json($exception->getMessage())->setStatusCode(400, 'Bad request');
         }
-        return response()->json([
-            'id' => $data->id,
-            'status' => $data->status,
-            'title' => $data->task_name,
-            'executer' => $executer->username,
-            'deadline' => $data->deadline,
-            'difficulty' => $data->urgency,
-            'time' => $data->estimated_time,
-            'timeF' => $data->done_time,
-            'author' => $creator->username,
-            'description' => $data->task_description,
-            'project_id' => $data->project_id,
-        ])->setStatusCode(201, 'Successful Created');
+        return response()->json($data)->setStatusCode(201, 'Successful Created');
     }
 
     /**
@@ -133,14 +128,21 @@ class TaskController extends Controller
             return response($validated->messages(), 400);
         }
         try {
-            $task = Task::query()->where('id', $task_id)
-                ->update([
-                    'task_name' => $request->task_name,
-                    'task_description' => $request->task_description,
-                    'assignee_id' => $request->assignee_id,
-                    'urgency' => $request->urgency,
-                    'deadline' => $request->deadline,
-                ]);
+            $task = [
+                'update_status' => Task::query()->where('id', $task_id)
+                    ->update([
+                        'task_name' => $request->task_name,
+                        'task_description' => $request->task_description,
+                        'project_id' => $request->project_id,
+                        'assignee_id' => $request->assignee_id,
+                        'urgency' => $request->urgency,
+                        'is_private' => $request->is_private,
+                        'deadline' => $request->deadline,
+                        'estimated_time' => $request->estimated_time,
+                        'done_time' => $request->done_time,
+                    ]),
+                'task' => Task::query()->where('id', $task_id)->first(),
+            ];
         } catch (\Exception $exception) {
             return response()->json($exception->getMessage())->setStatusCode(400, 'Bad request');
         }
@@ -197,14 +199,6 @@ class TaskController extends Controller
         } catch (\Exception $exception) {
             return response()->json($exception->getMessage())->setStatusCode(400, 'Bad request');
         }
-//        return response()->json([
-//            'status' => $data->status,
-//            'title' => $data->task_name,
-//            'deadline' => $data->deadline,
-//            'difficulty' => $data->urgency,
-//            'time' => $data->estimated_time,
-//            'timeF' => $data->done_time,
-//            'description' => $data->task_description])->setStatusCode(200, 'Ok');
         return response()->json($data)->setStatusCode(200, 'Ok');
     }
 
