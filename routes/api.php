@@ -28,10 +28,10 @@ Route::post('/user_private_tasks', 'TaskController@get_user_private_tasks');
 Route::prefix('/task')->group(function () {
     Route::get('/', 'TaskController@index');
     Route::post('/', 'TaskController@store');
+    Route::delete('/', 'TaskController@destroy');
     Route::prefix('/{task_id}')->group(function () {
         Route::get('/', 'TaskController@show');
         Route::patch('/', 'TaskController@update');
-        Route::delete('/', 'TaskController@destroy');
         Route::post('/', 'SubTaskController@store');
     });
 });

@@ -7,6 +7,7 @@ use App\Http\Requests\TaskRequest;
 use App\SubTask;
 use App\Task;
 use App\User;
+use http\Client\Request;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -146,13 +147,14 @@ class TaskController extends Controller
     /**
      * Remove the specified resource from storage.
      *
+     * @param \Illuminate\Http\Request $request
      * @param int $id
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response|object
      */
-    public function destroy($task_id, Request $request)
+    public function destroy(Request $request)
     {
         try {
-            $task = Task::query()->where('id', $task_id)->delete();
+            $task = Task::query()->where('id', $request->task_id)->delete();
         } catch (\Exception $exception) {
             return response()->json($exception->getMessage())->setStatusCode(400, 'Bad request');
         }
