@@ -23,6 +23,7 @@ Route::prefix('/users')->group(function () {
     Route::post('/login', 'UserController@login');
     Route::get('/logout', 'UserController@logout');
 });
+// test
 Route::post('/user_tasks', 'TaskController@get_user_tasks');
 Route::post('/user_private_tasks', 'TaskController@get_user_private_tasks');
 Route::prefix('/task')->group(function () {
