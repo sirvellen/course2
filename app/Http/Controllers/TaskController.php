@@ -87,20 +87,14 @@ class TaskController extends Controller
     public function show($task_id, Request $request)
     {
         try {
-            $subtask = SubTask::select()->where('task_id', $task_id)->get()->toArray();
-            dump($subtask);
-            if ($subtask = NULL) {
-                dd('true');
-            }
-            else {
-                dd('else');
-            }
-            if ($subtask != null) {
-                $data = array_merge(Task::select()->where('id', $task_id)->first(), $subtask);
-            }
-            else {
-                $data = Task::all()->where('id', $task_id)->first();
-            }
+            $data = Task::query()->where('id', $task_id)->first();
+            $creator = User::query()->select('username')->where('id', $data->creator_id)->first();
+            $executer = User::query()->select('username')->where('id', $data->assignee_id)->first();
+            $data = [
+                'task' => $data,
+                'creator' => $creator->username,
+                'executer' => $executer->username,
+            ];
         } catch (\Exception $exception) {
             return response()->json($exception->getMessage())->setStatusCode(400, 'Bad request');
         }
@@ -155,10 +149,10 @@ class TaskController extends Controller
      * @param int $id
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response|object
      */
-    public function destroy($task_id, Request $request)
+    public function destroy(Request $request)
     {
         try {
-            $task = Task::query()->where('id', $task_id)->delete();
+            $task = Task::query()->where('id', $request->$task_id)->delete();
         } catch (\Exception $exception) {
             return response()->json($exception->getMessage())->setStatusCode(400, 'Bad request');
         }
