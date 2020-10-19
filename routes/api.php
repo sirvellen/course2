@@ -53,7 +53,3 @@ Route::prefix('/project')->group(function () {
         });
     });
 });
-
-
-// Exception routes
-Route::get('exception/index', 'ExceptionController@index');

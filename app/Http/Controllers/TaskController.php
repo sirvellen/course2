@@ -152,7 +152,7 @@ class TaskController extends Controller
     public function destroy(Request $request)
     {
         try {
-            $task = Task::query()->where('id', $request->$task_id)->delete();
+            $task = Task::query()->where('id', $request->task_id)->delete();
         } catch (\Exception $exception) {
             return response()->json($exception->getMessage())->setStatusCode(400, 'Bad request');
         }
