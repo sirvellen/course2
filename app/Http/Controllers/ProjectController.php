@@ -37,7 +37,7 @@ class ProjectController extends Controller
                 'project_name' => ['required', 'string'],
                 'project_description' => ['required', 'string'],
                 'project_deadline' => ['nullable', 'string'],
-                'project_status' => 'nullable|numeric|min:1|max:3|default:1',
+                'project_status' => 'nullable|numeric|min:1|max:3',
             ]);
 
         if ($validated->fails()) {

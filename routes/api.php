@@ -21,7 +21,7 @@ Route::prefix('/users')->group(function () {
     Route::post('/register', 'UserController@store');
     Route::patch('/update', 'UserController@update');
     Route::post('/login', 'UserController@login');
-    Route::get('/logout/{id}', 'UserController@logout');
+    Route::get('/logout', 'UserController@logout');
 });
 Route::post('/user_tasks', 'TaskController@get_user_tasks');
 Route::post('/user_private_tasks', 'TaskController@get_user_private_tasks');
