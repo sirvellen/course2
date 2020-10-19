@@ -149,10 +149,10 @@ class TaskController extends Controller
      * @param int $id
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response|object
      */
-    public function destroy(Request $request)
+    public function destroy($task_id, Request $request)
     {
         try {
-            $task = Task::query()->where('id', $request->task_id)->delete();
+            $task = Task::query()->where('id', $task_id)->delete();
         } catch (\Exception $exception) {
             return response()->json($exception->getMessage())->setStatusCode(400, 'Bad request');
         }
