@@ -88,6 +88,7 @@ class TaskController extends Controller
     {
         try {
             $data = Task::query()->where('id', $task_id)->first();
+            d
             $creator = User::query()->select('username')->where('id', $data->creator_id)->first();
             $executer = User::query()->select('username')->where('id', $data->assignee_id)->first();
             $data = [
