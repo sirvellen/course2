@@ -32,12 +32,12 @@ class UserController extends Controller
         } catch(\Exception $exception) {
             return response()->json($exception)->setStatusCode('400', 'Bad request');
         }
-        return response([
+        return response()->json([
             'user_id' => $user->id,
             'username' => $user->username,
             'email' => $user->email,
             'role' => $user->role,
-        ])->json($user)->setStatusCode('200', 'Ok');
+        ])->setStatusCode('200', 'Ok');
     }
 
     /**
