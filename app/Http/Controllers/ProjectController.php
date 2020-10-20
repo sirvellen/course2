@@ -74,14 +74,17 @@ class ProjectController extends Controller
     {
         try {
             $data = Project::all()->where('id', $project_id)->first();
-            $tasks = Task::all()->where('project_id', $project_id)->toArray();
+            $tasks = Task::all()->where('project_id', $project_id);
             $project_creator = User::query()->select('username')->where('id', $data->project_creator)->first()->toArray();
-            $task_creator = User::query()->select('username')->where('id', $data->project_creator)->first()->toArray();
-            $data = array_merge($data, $tasks, $project_creator, $task_creator);
+//            $task_creator = User::query()->select('username')->where('id', $data->project_creator)->first()->toArray();
         } catch (\Exception $exception) {
             return response()->json($exception->getMessage())->setStatusCode(400, 'Bad request');
         }
-        return response()->json($data)->setStatusCode(201, 'Successful Found');
+        return response()->json([
+            'project' => $data,
+            'tasks' => $tasks,
+            'project_creator' => $project_creator,
+            ])->setStatusCode(201, 'Successful Found');
     }
     /**
      * Update the specified resource in storage.
