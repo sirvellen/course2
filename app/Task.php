@@ -25,7 +25,8 @@ class Task extends Model
         'assignee_id' => 'int',
         'urgency' => 'int',
         'is_private' => 'bool',
-        'deadline' => 'int',
+        'deadline' => 'string',
         'project_id' => 'int',
+        'status' => 'int',
     ];
 }
