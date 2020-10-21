@@ -134,6 +134,7 @@ class TaskController extends Controller
                         'deadline' => $request->deadline,
                         'estimated_time' => $request->estimated_time,
                         'done_time' => $request->done_time,
+                        'status' => $request->status,
                     ]),
                 'task' => Task::query()->where('id', $task_id)->first(),
             ];
