@@ -27,6 +27,6 @@ class Task extends Model
         'is_private' => 'bool',
         'deadline' => 'string',
         'project_id' => 'int',
-        'status' => 'int',
+        'status' => 'string',
     ];
 }
