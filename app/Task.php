@@ -18,4 +18,14 @@ class Task extends Model
         'estimated_time',
         'done_time'
     ];
+
+    protected $casts = [
+        'id' => 'int',
+        'creator_id' => 'int',
+        'assignee_id' => 'int',
+        'urgency' => 'int',
+        'is_private' => 'bool',
+        'deadline' => 'int',
+        'project_id' => 'int',
+    ];
 }

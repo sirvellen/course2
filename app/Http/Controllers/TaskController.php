@@ -150,14 +150,25 @@ class TaskController extends Controller
      * @param int $id
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response|object
      */
-    public function destroy(Request $request)
+    public function destroy($task_id)
     {
         try {
-            $task = Task::query()->where('id', $request->task_id)->delete();
+            $status = Task::query()->where('id', $task_id)->delete();
         } catch (\Exception $exception) {
             return response()->json($exception->getMessage())->setStatusCode(400, 'Bad request');
         }
-        return response()->json($task)->setStatusCode(202, 'Successful deleted');
+        if ($status === 1) {
+            return response()->json([
+                'message' => 'Успешно удалено',
+            ])->setStatusCode(200, 'Successful deleted');
+        } else if ($status === 0) {
+            return response()->json([
+                'message' => 'Не удалено',
+            ])->setStatusCode(400, 'Bad request');
+        }
+        return response()->json([
+            'message' => 'Ошибка сервера',
+        ])->setStatusCode(500, 'Server error');
     }
 
     public function done($task_id, Request $request)

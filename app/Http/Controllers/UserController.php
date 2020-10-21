@@ -136,7 +136,7 @@ class UserController extends Controller
                 'role' => $user->role,
             ])->setStatusCode(200, 'Успешная авторизация');
         }
-        return response()->json(['login' => 'Некорректный логин или пароль'])->setStatusCode(422, 'Необрабатываемый экземпляр');
+        return response()->json(['message' => 'Некорректный логин или пароль'])->setStatusCode(422, 'Необрабатываемый экземпляр');
     }
 
     public function logout($id)
