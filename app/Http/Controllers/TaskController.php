@@ -160,11 +160,13 @@ class TaskController extends Controller
         }
         if ($status === 1) {
             return response()->json([
+                'deleted' => $status, // = 1 or true
                 'message' => 'Успешно удалено',
             ])->setStatusCode(200, 'Successful deleted');
         } else if ($status === 0) {
             return response()->json([
-                'message' => 'Не удалено',
+                'deleted' => $status, // = 0 of false
+                'message' => 'Задача с таким id не существует',
             ])->setStatusCode(400, 'Bad request');
         }
         return response()->json([
