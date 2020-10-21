@@ -150,7 +150,7 @@ class TaskController extends Controller
      * @param int $id
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response|object
      */
-    public function destroy($task_id)
+    public function destroy($task_id, Request $request)
     {
         try {
             $status = Task::query()->where('id', $task_id)->delete();
